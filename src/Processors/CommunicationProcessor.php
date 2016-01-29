@@ -3,51 +3,65 @@
 namespace Rhubarb\Scaffolds\Communications\Processors;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
+use Rhubarb\Crown\Email\SimpleEmail;
+use Rhubarb\Crown\Logging\Log;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
 
 /**
  * Class CommunicationProcessor
  * @package Rhubarb\Scaffolds\Communications\Processors
  */
-class CommunicationProcessor
+final class CommunicationProcessor
 {
-    /**
-     * @var Communication
-     */
-    private $communication;
+    private static $emailProviderClassName;
 
-    public function __construct(Communication $communication)
+    final public static function sendCommunication(Communication $communication)
     {
-        $this->communication = $communication;
-    }
+        Log::debug("Considering to send CommunicationEmail with ID: " . $communication->CommunicationID, "COMMS");
 
-    final public function sendCommunication()
-    {
-        if ($this->validateCommunication())
+        $currentDateTime = new RhubarbDateTime("now");
+
+        if ($communication->shouldSendCommunication($currentDateTime))
         {
-            switch ($this->communication->Type) {
-                case Communication::TYPE_BLANK:
-                    break;
-                case Communication::TYPE_EMAIL:
-                    $this->sendEmail();
-                    break;
-            }
+            self::sendEmails($communication);
+
+            $communication->Completed = true;
+            $communication->save();
         }
     }
 
-    final private function validateCommunication() {
-        return $this->communication->shouldSendCommunication();
-    }
-
-    final private function sendEmail()
+    final private static function sendEmails(Communication $communication)
     {
-        $this->communication->Sent = true;
-        $this->communication->save();
-
-        $this->processCommunicationAfterSending();
+        foreach($communication->Emails as $email){
+            self::sendEmail($email);
+        }
     }
 
-    protected function processCommunicationAfterSending() {
+    final private static function sendEmail(CommunicationEmail $communicationEmail)
+    {
+        if ($communicationEmail->Sent){
+            Log::warning("Attempt blocked to send already sent email", "COMMS",
+                [
+                    "CommunicationEmailID" => $communicationEmail->CommunicationEmailID,
+                    "EmailProvider" => self::$emailProviderClassName
+                ]
+            );
+            return;
+        }
 
+        $emailProvider = new self::$emailProviderClassName();
+        $emailProvider->sendEmail($communicationEmail->getEmail());
+
+        $communicationEmail->Sent = true;
+        $communicationEmail->save();
+
+        Log::debug("Sending communication by Email", "COMMS", ["CommunicationID" => $communicationEmail->CommunicationID,
+        "EmailProvider" => self::$emailProviderClassName]);
+    }
+
+    public static function setEmailProviderClassName($emailProviderClassName)
+    {
+        self::$emailProviderClassName = $emailProviderClassName;
     }
 }

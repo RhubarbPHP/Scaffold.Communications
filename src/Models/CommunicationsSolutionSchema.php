@@ -14,6 +14,23 @@ class CommunicationsSolutionSchema extends SolutionSchema
     {
         parent::__construct(0.1);
 
-        $this->addModel("Communication", __NAMESPACE__ . '\Communications\Communication', 0.1);
+        $this->addModel("Communication", __NAMESPACE__ . '\Communication', 0.1);
+        $this->addModel("CommunicationEmail", __NAMESPACE__ . '\CommunicationEmail', 0.1);
     }
+
+    protected function defineRelationships()
+    {
+        parent::defineRelationships();
+
+        $this->declareOneToManyRelationships(
+            [
+                "Communication" =>
+                [
+                    "Emails" => "CommunicationEmail.CommunicationID"
+                ]
+            ]
+        );
+    }
+
+
 }
