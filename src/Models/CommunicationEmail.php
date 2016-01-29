@@ -12,17 +12,23 @@ use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
 use Rhubarb\Stem\Schema\Columns\BooleanColumn;
 use Rhubarb\Stem\Schema\Columns\CommaSeparatedListColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
+use Rhubarb\Stem\Schema\Columns\JsonColumn;
 use Rhubarb\Stem\Schema\Columns\LongStringColumn;
 use Rhubarb\Stem\Schema\Columns\StringColumn;
 use Rhubarb\Stem\Schema\ModelSchema;
 
 /**
- * @property int $CommunicationID
+ * @property int $CommunicationEmailID
+ * @property string $RecipientName
+ * @property string $RecipientEmail
+ * @property string $SenderName
+ * @property string $SenderEmail
  * @property string $Subject
- * @property string $Body
+ * @property string $HtmlBody
+ * @property string $TextBody
+ * @property string $Attachments
  * @property RhubarbDateTime $DateCreated
  * @property RhubarbDateTime $DateSent
- * @property RhubarbDateTime $DateToSend
  * @property bool $Sent
  */
 class CommunicationEmail extends Model
@@ -40,6 +46,7 @@ class CommunicationEmail extends Model
             new StringColumn("Subject", 160),
             new LongStringColumn("HtmlBody"),
             new LongStringColumn("TextBody"),
+            new JsonColumn("Attachments"),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new BooleanColumn("Sent", false)
@@ -48,12 +55,14 @@ class CommunicationEmail extends Model
         return $schema;
     }
 
-    public function setSent($newValue) {
+    public function setSent($newValue)
+    {
         $this->setModelValue("Sent", $newValue);
         $this->setModelValue("DateSent", new RhubarbDateTime("now"));
     }
 
-    public function setDateSent($newValue) {
+    public function setDateSent($newValue)
+    {
         throw new ModelConsistencyValidationException();
     }
 
@@ -98,6 +107,30 @@ class CommunicationEmail extends Model
         $simpleEmail->setSender($this->SenderEmail, $this->SenderName);
         $simpleEmail->setHtml($this->HtmlBody);
 
+        $attachmentsArray = json_decode($this->Attachments);
+        if (!empty($attachmentsArray)) {
+            foreach ($attachmentsArray as $attachment) {
+                $simpleEmail->addAttachment($attachment->path, $attachment->name);
+            }
+        }
+
         return $simpleEmail;
+    }
+
+    public function addAttachment($path, $newName = "")
+    {
+        $attachments = json_decode($this->Attachments, true);
+
+        if ($newName == "") {
+            $newName = basename($path);
+        }
+
+        $file = new \stdClass();
+        $file->path = $path;
+        $file->name = $newName;
+
+        $attachments[] = $file;
+
+        $this->Attachments = json_encode($attachments);
     }
 }
