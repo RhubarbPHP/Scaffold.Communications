@@ -35,7 +35,7 @@ class CommunicationEmail extends Model
 {
     protected function createSchema()
     {
-        $schema = new ModelSchema("tblCommunication");
+        $schema = new ModelSchema("tblCommunicationEmail");
 
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationEmailID"),
