@@ -66,6 +66,11 @@ class CommunicationEmail extends Model
         throw new ModelConsistencyValidationException();
     }
 
+    public function setAttachments($attachments)
+    {
+        $this->setModelValue("Attachments", json_encode($attachments));
+    }
+
     protected function getConsistencyValidationErrors()
     {
         $validationErrors = parent::getConsistencyValidationErrors();
@@ -131,6 +136,6 @@ class CommunicationEmail extends Model
 
         $attachments[] = $file;
 
-        $this->Attachments = json_encode($attachments);
+        $this->Attachments = $attachments;
     }
 }
