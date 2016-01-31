@@ -66,11 +66,6 @@ class CommunicationEmail extends Model
         throw new ModelConsistencyValidationException();
     }
 
-    public function setAttachments($attachments)
-    {
-        $this->setModelValue("Attachments", json_encode($attachments));
-    }
-
     protected function getConsistencyValidationErrors()
     {
         $validationErrors = parent::getConsistencyValidationErrors();
@@ -112,9 +107,8 @@ class CommunicationEmail extends Model
         $simpleEmail->setSender($this->SenderEmail, $this->SenderName);
         $simpleEmail->setHtml($this->HtmlBody);
 
-        $attachmentsArray = json_decode($this->Attachments);
-        if (!empty($attachmentsArray)) {
-            foreach ($attachmentsArray as $attachment) {
+        if (!empty($this->Attachments)) {
+            foreach ($this->Attachments as $attachment) {
                 $simpleEmail->addAttachment($attachment->path, $attachment->name);
             }
         }
@@ -124,7 +118,7 @@ class CommunicationEmail extends Model
 
     public function addAttachment($path, $newName = "")
     {
-        $attachments = json_decode($this->Attachments, true);
+        $attachments = $this->Attachments;
 
         if ($newName == "") {
             $newName = basename($path);
