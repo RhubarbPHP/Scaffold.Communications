@@ -6,6 +6,8 @@ use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Email\Email;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
+use Rhubarb\Stem\Filters\Equals;
+use Rhubarb\Stem\Filters\Not;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
 use Rhubarb\Stem\Schema\Columns\BooleanColumn;
@@ -103,11 +105,10 @@ class Communication extends Model
     }
 
     public static function FindUnsentCommunications() {
-        return [];
-//        return self::Find( new AndGroup(
-//            [
-//
-//            ]
-//        ));
+        return self::Find( new AndGroup(
+            [
+                new Equals("Completed", false)
+            ]
+        ));
     }
 }
