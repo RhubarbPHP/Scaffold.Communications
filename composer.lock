@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "62ceddc552d98890d0a4eb376de7c56e",
-    "content-hash": "52979106d86e7bfe7fd57505967aed70",
+    "hash": "dbeabebd496394c9c8ead876adaee203",
+    "content-hash": "47b64b9701fb66cb1c0f7decddb6badc",
     "packages": [
         {
             "name": "components/jquery",
@@ -135,6 +135,49 @@
             "time": "2015-03-13 14:48:12"
         },
         {
+            "name": "rhubarbphp/module-leaf",
+            "version": "v0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RhubarbPHP/Module.Leaf.git",
+                "reference": "946d55ade7b50ff992320007ba336a9abcf6df7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RhubarbPHP/Module.Leaf/zipball/946d55ade7b50ff992320007ba336a9abcf6df7f",
+                "reference": "946d55ade7b50ff992320007ba336a9abcf6df7f",
+                "shasum": ""
+            },
+            "require": {
+                "rhubarbphp/rhubarb": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rhubarb\\Leaf\\": "src/",
+                    "Rhubarb\\Leaf\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "A nestable user interface building module for the Rhubarb PHP framework based upon the model-view-presenter pattern.",
+            "homepage": "http://www.rhubarbphp.com/",
+            "keywords": [
+                "framework",
+                "leaf",
+                "mvp",
+                "php",
+                "presenter",
+                "rhubarb"
+            ],
+            "time": "2015-02-23 21:22:04"
+        },
+        {
             "name": "rhubarbphp/module-stem",
             "version": "1.0.x-dev",
             "source": {
@@ -235,6 +278,50 @@
                 "php"
             ],
             "time": "2016-01-19 16:25:53"
+        },
+        {
+            "name": "rhubarbphp/scaffold-background-tasks",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RhubarbPHP/Scaffold.BackgroundTasks.git",
+                "reference": "05b0e9be2ce47536efea2871cf60c028f8816dbb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RhubarbPHP/Scaffold.BackgroundTasks/zipball/05b0e9be2ce47536efea2871cf60c028f8816dbb",
+                "reference": "05b0e9be2ce47536efea2871cf60c028f8816dbb",
+                "shasum": ""
+            },
+            "require": {
+                "rhubarbphp/module-leaf": "*",
+                "rhubarbphp/module-stem": "*",
+                "rhubarbphp/rhubarb": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rhubarb\\Scaffolds\\BackgroundTasks\\": "src/",
+                    "Rhubarb\\Scaffolds\\BackgroundTasks\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Provides a background task processing module.",
+            "homepage": "http://www.rhubarbphp.com/",
+            "keywords": [
+                "background",
+                "framework",
+                "php",
+                "rhubarb",
+                "task"
+            ],
+            "time": "2015-12-24 11:41:50"
         }
     ],
     "packages-dev": [
@@ -414,58 +501,6 @@
                 "webdriver"
             ],
             "time": "2015-12-31 15:58:49"
-        },
-        {
-            "name": "fzaninotto/faker",
-            "version": "v1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d0190b156bcca848d401fb80f31f504f37141c8d",
-                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~1.5"
-            },
-            "suggest": {
-                "ext-intl": "*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Faker\\": "src/Faker/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Zaninotto"
-                }
-            ],
-            "description": "Faker is a PHP library that generates fake data for you.",
-            "keywords": [
-                "data",
-                "faker",
-                "fixtures"
-            ],
-            "time": "2015-05-29 06:29:14"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2030,7 +2065,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "rhubarbphp/rhubarb": 20,
-        "rhubarbphp/module-stem": 20
+        "rhubarbphp/module-stem": 20,
+        "rhubarbphp/scaffold-background-tasks": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

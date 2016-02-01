@@ -6,9 +6,18 @@ use Codeception\TestCase\Test;
 use Rhubarb\Crown\Email\SimpleEmail;
 use Rhubarb\Scaffolds\Communications\EmailProviders\CommunicationEmailProvider;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
 
 abstract class CommunicationTestCase extends Test
 {
+    protected function __before()
+    {
+        parent::_before();
+
+        Communication::clearObjectCache();
+        CommunicationEmail::clearObjectCache();
+    }
+
     /**
      * @return Communication
      * @throws \Rhubarb\Stem\Exceptions\RecordNotFoundException
