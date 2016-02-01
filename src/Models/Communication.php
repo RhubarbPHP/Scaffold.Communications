@@ -5,6 +5,7 @@ namespace Rhubarb\Scaffolds\Communications\Models;
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Email\Email;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
+use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
 use Rhubarb\Stem\Schema\Columns\BooleanColumn;
@@ -99,5 +100,14 @@ class Communication extends Model
         }
 
         parent::beforeSave();
+    }
+
+    public static function FindUnsentCommunications() {
+        return [];
+//        return self::Find( new AndGroup(
+//            [
+//
+//            ]
+//        ));
     }
 }

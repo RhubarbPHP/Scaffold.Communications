@@ -3,6 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications\Tests\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
+use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
@@ -30,5 +31,14 @@ class CommunicationTest extends CommunicationTestCase
         $communication->save();
 
         $this->assertNotEmpty($communication->DateCompleted, "Expected DateSent to be set");
+    }
+
+    public function testFindAllUnsentCommunications()
+    {
+        $this->assertCount(0, Communication::FindUnsentCommunications(), "Expected 0 Communications to be sent");
+
+        $communication = $this->createCommunicationForEmail();
+
+        $this->assertCount(1, Communication::FindUnsentCommunications(), "Expected 1 Communications to be sent");
     }
 }
