@@ -36,6 +36,7 @@ class Communication extends Model
             $communicationEmail->HtmlBody = $email->getHtml();
             $communicationEmail->TextBody = $email->getText();
             $communicationEmail->Subject = $email->getSubject();
+            $communicationEmail->Attachments = $email->getAttachments();
 
             $communication->Emails->append($communicationEmail);
         }

@@ -30,7 +30,6 @@ class CommunicationEmailTest extends CommunicationTestCase
         $this->assertEquals($communicationEmail->SenderEmail,$email->getSender()->email, "RecipientEmail don't match");
         $this->assertEquals($communicationEmail->TextBody,$email->getText(), "TextBody don't match");
         $this->assertEquals($communicationEmail->HtmlBody,$email->getHtml(), "HtmlBody don't match");
-        $attachments = json_decode($communicationEmail->Attachments);
-        $this->assertEquals($attachments, $email->getAttachments(), "Attachments don't match");
+        $this->assertEquals($communicationEmail->Attachments, $email->getAttachments(), "Attachments don't match");
     }
 }

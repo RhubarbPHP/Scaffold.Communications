@@ -107,9 +107,8 @@ class CommunicationEmail extends Model
         $simpleEmail->setSender($this->SenderEmail, $this->SenderName);
         $simpleEmail->setHtml($this->HtmlBody);
 
-        $attachmentsArray = json_decode($this->Attachments);
-        if (!empty($attachmentsArray)) {
-            foreach ($attachmentsArray as $attachment) {
+        if (!empty($this->Attachments)) {
+            foreach ($this->Attachments as $attachment) {
                 $simpleEmail->addAttachment($attachment->path, $attachment->name);
             }
         }
@@ -119,7 +118,7 @@ class CommunicationEmail extends Model
 
     public function addAttachment($path, $newName = "")
     {
-        $attachments = json_decode($this->Attachments, true);
+        $attachments = $this->Attachments;
 
         if ($newName == "") {
             $newName = basename($path);
@@ -131,6 +130,6 @@ class CommunicationEmail extends Model
 
         $attachments[] = $file;
 
-        $this->Attachments = json_encode($attachments);
+        $this->Attachments = $attachments;
     }
 }
