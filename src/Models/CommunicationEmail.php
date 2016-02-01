@@ -9,11 +9,10 @@ use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Models\Model;
-use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
 use Rhubarb\Stem\Schema\Columns\BooleanColumn;
-use Rhubarb\Stem\Schema\Columns\CommaSeparatedListColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
+use Rhubarb\Stem\Schema\Columns\ForeignKeyColumn;
 use Rhubarb\Stem\Schema\Columns\JsonColumn;
 use Rhubarb\Stem\Schema\Columns\LongStringColumn;
 use Rhubarb\Stem\Schema\Columns\StringColumn;
@@ -21,6 +20,7 @@ use Rhubarb\Stem\Schema\ModelSchema;
 
 /**
  * @property int $CommunicationEmailID
+ * @property int $CommunicationID
  * @property string $RecipientName
  * @property string $RecipientEmail
  * @property string $SenderName
@@ -41,6 +41,7 @@ class CommunicationEmail extends Model
 
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationEmailID"),
+            new ForeignKeyColumn("CommunicationID"),
             new StringColumn("RecipientName", 70),
             new StringColumn("RecipientEmail", 200),
             new StringColumn("SenderName", 100),

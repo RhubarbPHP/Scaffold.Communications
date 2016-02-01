@@ -3,6 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications;
 
 use Rhubarb\Crown\Module;
+use Rhubarb\Scaffolds\Communications\Custard\SendCommunicationsCommand;
 use Rhubarb\Stem\Schema\SolutionSchema;
 
 class CommunicationsModule extends Module
@@ -13,5 +14,10 @@ class CommunicationsModule extends Module
         parent::initialise();
     }
 
-
+    public function getCustardCommands()
+    {
+        return [
+            new SendCommunicationsCommand()
+        ];
+    }
 }
