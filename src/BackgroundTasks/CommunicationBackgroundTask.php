@@ -5,8 +5,10 @@ namespace Rhubarb\Scaffolds\Communications\BackgroundTasks;
 use Rhubarb\Scaffolds\BackgroundTasks\BackgroundTask;
 use Rhubarb\Scaffolds\BackgroundTasks\Models\BackgroundTaskStatus;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 
-class CommunicationProcess extends BackgroundTask
+class CommunicationBackgroundTask extends BackgroundTask
 {
 
     /**
@@ -19,10 +21,9 @@ class CommunicationProcess extends BackgroundTask
         $status->Message = "Processing Communications to be sent";
         $status->save();
 
-        $unsentCommunications = Communication::FindUnsentCommunications();
+        $communicationID = $status->TaskSettings["CommunicationID"];
 
-        foreach($unsentCommunications as $communication) {
-
-        }
+        $communication = new Communication($communicationID);
+        CommunicationProcessor::sendCommunication($communication);
     }
 }

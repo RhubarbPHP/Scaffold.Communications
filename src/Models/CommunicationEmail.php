@@ -6,6 +6,8 @@ use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Email\Email;
 use Rhubarb\Crown\Email\SimpleEmail;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
+use Rhubarb\Stem\Filters\AndGroup;
+use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
@@ -131,5 +133,15 @@ class CommunicationEmail extends Model
         $attachments[] = $file;
 
         $this->Attachments = $attachments;
+    }
+
+    public static function FindUnsentCommunicationEmails($communicationID)
+    {
+        return self::Find(new AndGroup(
+            [
+                new Equals("CommunicationID", $communicationID),
+                new Equals("Sent", false)
+            ]
+        ));
     }
 }

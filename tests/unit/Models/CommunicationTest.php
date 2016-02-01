@@ -33,12 +33,12 @@ class CommunicationTest extends CommunicationTestCase
         $this->assertNotEmpty($communication->DateCompleted, "Expected DateSent to be set");
     }
 
-    public function testFindAllUnsentCommunications()
-    {
-        $this->assertCount(0, Communication::FindUnsentCommunications(), "Expected 0 Communications to be sent");
-
-        $communication = $this->createCommunicationForEmail();
-
-        $this->assertCount(1, Communication::FindUnsentCommunications(), "Expected 1 Communications to be sent");
-    }
+//    public function testFindAllUnsentCommunications()
+//    {
+//        $this->assertCount(0, Communication::FindUnsentCommunications(), "Expected 0 Communications to be sent");
+//
+//        $communication = $this->createCommunicationForEmail();
+//
+//        $this->assertCount(1, Communication::FindUnsentCommunications(), "Expected 1 Communications to be sent");
+//    }
 }
