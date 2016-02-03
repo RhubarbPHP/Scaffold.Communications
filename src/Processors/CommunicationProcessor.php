@@ -50,7 +50,7 @@ final class CommunicationProcessor
             return;
         }
 
-        $emailProvider = new self::$emailProviderClassName();
+        $emailProvider = self::getEmailProvider();
         $emailProvider->sendEmail($communicationEmail->getEmail());
 
         $communicationEmail->Sent = true;
@@ -63,5 +63,11 @@ final class CommunicationProcessor
     public static function setEmailProviderClassName($emailProviderClassName)
     {
         self::$emailProviderClassName = $emailProviderClassName;
+    }
+
+    public static function getEmailProvider()
+    {
+        $class = self::$emailProviderClassName;
+        return new $class();
     }
 }

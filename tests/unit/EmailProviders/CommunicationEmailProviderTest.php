@@ -9,9 +9,11 @@ namespace Rhubarb\Scaffolds\Communications\Tests\Processors;
 
 use Rhubarb\Crown\Email\EmailProvider;
 use Rhubarb\Crown\Email\SimpleEmail;
+use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
 use Rhubarb\Scaffolds\Communications\EmailProviders\CommunicationEmailProvider;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
 
 class CommunicationEmailProviderTest extends CommunicationTestCase
@@ -27,6 +29,7 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
         $email->setHtml("<html><head>Test Head</head><body>Test Body</body></html>");
         $email->setText("Test Text Body");
 
+        CommunicationProcessor::setEmailProviderClassName(UnitTestingEmailProvider::class);
         EmailProvider::setDefaultEmailProviderClassName(CommunicationEmailProvider::class);
         EmailProvider::getDefaultEmailProvider()->sendEmail($email);
 
