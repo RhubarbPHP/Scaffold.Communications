@@ -4,6 +4,8 @@ namespace Rhubarb\Scaffolds\Communications\Custard;
 
 use Rhubarb\Custard\Command\CustardCommand;
 use Rhubarb\Scaffolds\Communications\BackgroundTasks\CommunicationBackgroundTask;
+use Rhubarb\Scaffolds\Communications\Models\Communication;
+use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,7 +16,7 @@ class SendCommunicationsCommand extends CustardCommand
     {
         $this->setName('communication:send-unsent')
             ->setDescription('Sends unsent Communications to the their relevant recipients')
-            ->addArgument('communicationID', InputArgument::OPTIONAL, 'The id of the communication you wish to send');;
+            ->addArgument('communicationID', InputArgument::OPTIONAL, 'The id of the communication you wish to send');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -23,6 +25,14 @@ class SendCommunicationsCommand extends CustardCommand
 
         $communicationID = $input->getArgument('communicationID');
 
-        CommunicationBackgroundTask::initiate([$communicationID]);
+        if (isset($communicationID)) {
+            $communication = new Communication($communicationID);
+            CommunicationProcessor::sendCommunication($communication);
+        } else {
+            $unsentCommunicationsArray = Communication::FindUnsentCommunications();
+            foreach ($unsentCommunicationsArray as $communication) {
+                CommunicationProcessor::sendCommunication($communication);
+            }
+        }
     }
 }

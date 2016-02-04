@@ -2,6 +2,7 @@
 
 namespace Rhubarb\Scaffolds\Communications\BackgroundTasks;
 
+use Rhubarb\Crown\Exceptions\ImplementationException;
 use Rhubarb\Scaffolds\BackgroundTasks\BackgroundTask;
 use Rhubarb\Scaffolds\BackgroundTasks\Models\BackgroundTaskStatus;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
@@ -16,14 +17,11 @@ class CommunicationBackgroundTask extends BackgroundTask
 
         $communicationID = $status->TaskSettings["CommunicationID"];
 
-        if (isset($communicationID)) {
-            $communication = new Communication($communicationID);
-            CommunicationProcessor::sendCommunication($communication);
-        } else {
-            $unsentCommunicationsArray = Communication::FindUnsentCommunications();
-            foreach($unsentCommunicationsArray as $communication) {
-                CommunicationProcessor::sendCommunication($communication);
-            }
+        if (!$communicationID) {
+            throw new ImplementationException("Communication Background Task must have a Communication ID");
         }
+
+        $communication = new Communication($communicationID);
+        CommunicationProcessor::sendCommunication($communication);
     }
 }
