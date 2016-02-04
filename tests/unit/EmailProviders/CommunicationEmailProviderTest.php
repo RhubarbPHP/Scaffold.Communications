@@ -7,8 +7,8 @@
 namespace Rhubarb\Scaffolds\Communications\Tests\Processors;
 
 
-use Rhubarb\Crown\Email\EmailProvider;
-use Rhubarb\Crown\Email\SimpleEmail;
+use Rhubarb\Crown\Sendables\Email\EmailProvider;
+use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
 use Rhubarb\Scaffolds\Communications\EmailProviders\CommunicationEmailProvider;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
@@ -31,7 +31,7 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
 
         CommunicationProcessor::setEmailProviderClassName(UnitTestingEmailProvider::class);
         EmailProvider::setDefaultEmailProviderClassName(CommunicationEmailProvider::class);
-        EmailProvider::getDefaultEmailProvider()->sendEmail($email);
+        EmailProvider::getDefaultProvider()->sendEmail($email);
 
         $this->assertCount(1, Communication::find(), "Communication count was not 1");
         $this->assertCount(1, CommunicationEmail::find(), "CommunicationEmail count was not 1");
@@ -54,7 +54,7 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
 
         $email->addRecipient("jdoe@hotmail.com", "Jane Doe");
 
-        EmailProvider::getDefaultEmailProvider()->sendEmail($email);
+        EmailProvider::getDefaultProvider()->sendEmail($email);
 
         $this->assertCount(3, CommunicationEmail::find(), "CommunicationEmail count was not 3 (2 recipients in email)");
 

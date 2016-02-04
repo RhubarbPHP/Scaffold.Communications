@@ -3,7 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications\Tests\Providers;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
-use Rhubarb\Crown\Email\SimpleEmail;
+use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;

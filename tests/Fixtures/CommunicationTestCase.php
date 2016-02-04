@@ -3,7 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications\Tests\Fixtures;
 
 use Codeception\TestCase\Test;
-use Rhubarb\Crown\Email\SimpleEmail;
+use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Scaffolds\Communications\EmailProviders\CommunicationEmailProvider;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;

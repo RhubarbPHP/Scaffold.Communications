@@ -3,7 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
-use Rhubarb\Crown\Email\Email;
+use Rhubarb\Crown\Sendables\Email\Email;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
