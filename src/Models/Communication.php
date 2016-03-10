@@ -37,7 +37,7 @@ class Communication extends Model
             $communicationEmail->SenderName = $email->getSender()->name;
             $communicationEmail->SenderEmail = $email->getSender()->email;
             $communicationEmail->HtmlBody = $email->getHtml();
-            $communicationEmail->TextBody = $email->getText();
+            $communicationEmail->Text = $email->getText();
             $communicationEmail->Subject = $email->getSubject();
             $communicationEmail->Attachments = $email->getAttachments();
 

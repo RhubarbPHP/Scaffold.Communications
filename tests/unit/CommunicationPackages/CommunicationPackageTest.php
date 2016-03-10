@@ -28,7 +28,7 @@ class CommunicationPackageTest extends CommunicationTestCase
 
         $this->assertCount(1, $this->package->getSendables(), "The sendable wasn't correctly added to the list");
 
-        $this->createEmailAndAddToPackage($this->package);
+        $this->createEmailAndAddToPackage();
 
         $this->assertCount(2, $this->package->getSendables(), "The sendable wasn't correctly added to the list");
     }
@@ -38,6 +38,7 @@ class CommunicationPackageTest extends CommunicationTestCase
         $email = $this->createEmailAndAddToPackage();
         $email->addRecipient("test@test.com");
         $email->setSubject("A test email");
+        $email->setText("This is the end, my lonely friend, the end.");
 
         $this->package->title = "A test communication";
         $this->package->send();
@@ -53,6 +54,12 @@ class CommunicationPackageTest extends CommunicationTestCase
         $item = CommunicationItem::findLast();
 
         $this->assertEquals("test@test.com", $item->Recipient, "The item didn't have a recipient");
+        $this->assertEquals("Email", $item->Type, "The type should have been email");
+        $this->assertEquals($email->getText(), $item->Text, "The text value wasn't set correctly");
+        $this->assertEquals(get_class($email), $item->SendableClassName, "The class name wasn't set correctly");
+        $this->assertEquals($email->toArray(), $item->Data, "The sendable wasn't encoded into data correctly");
+
+        // Next test is probably to test multiple sendables in a package.
     }
 
     /**

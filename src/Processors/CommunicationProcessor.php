@@ -78,10 +78,13 @@ final class CommunicationProcessor
         $communication->Title = $package->title;
         $communication->save();
 
+        $sendable = $package->getSendables()[0];
         $item = new CommunicationItem();
-        $item->Recipient = current($package->getSendables()[0]->getRecipients())->email;
-        $item->TextBody = "asdf";
-        $item->Type = "123";
+        $item->Recipient = current($sendable->getRecipients())->email;
+        $item->Text = $sendable->getText();
+        $item->Type = $sendable->getSendableType();
+        $item->SendableClassName = get_class($sendable);
+        $item->Data = $sendable->toArray();
         $item->save();
     }
 }

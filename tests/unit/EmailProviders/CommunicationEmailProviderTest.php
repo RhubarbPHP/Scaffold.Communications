@@ -50,7 +50,7 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
         $this->assertEquals($email->getSender()->name, $communicationEmail->SenderName, "Sender email not set correctly");
         $this->assertEquals($email->getSender()->email, $communicationEmail->SenderEmail, "Sender email not set correctly");
         $this->assertEquals($email->getHtml(), $communicationEmail->HtmlBody, "Html Body not set correctly");
-        $this->assertEquals($email->getText(), $communicationEmail->TextBody, "Text Body not set correctly");
+        $this->assertEquals($email->getText(), $communicationEmail->Text, "Text Body not set correctly");
 
         $email->addRecipient("jdoe@hotmail.com", "Jane Doe");
 

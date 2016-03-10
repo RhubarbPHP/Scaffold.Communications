@@ -21,12 +21,14 @@ use Rhubarb\Stem\Schema\ModelSchema;
 /**
  * @property int $CommunicationItemID
  * @property int $CommunicationID
+ * @property string $Type
+ * @property string $SendableClassName
  * @property string $Recipient
- * @property string $TextBody
+ * @property string $Text
+ * @property mixed $Data
  * @property RhubarbDateTime $DateCreated
  * @property RhubarbDateTime $DateSent
  * @property bool $Sent
- * @property mixed $Data
  */
 class CommunicationItem extends Model
 {
@@ -38,12 +40,13 @@ class CommunicationItem extends Model
             new AutoIncrementColumn("CommunicationItemID"),
             new ForeignKeyColumn("CommunicationID"),
             new StringColumn("Type",50),
+            new StringColumn("SendableClassName",150),
             new StringColumn("Recipient", 200),
-            new LongStringColumn("TextBody"),
+            new LongStringColumn("Text"),
+            new JsonColumn("Data", "", true),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
-            new BooleanColumn("Sent", false),
-            new JsonColumn("Data", "", true)
+            new BooleanColumn("Sent", false)
         );
 
         return $schema;
@@ -68,8 +71,8 @@ class CommunicationItem extends Model
             $validationErrors["Recipient"] = "Recipient field cannot be empty";
         }
 
-        if (empty($this->TextBody)) {
-            $validationErrors["TextBody"] = "TextBody field cannot be blank";
+        if (empty($this->Text)) {
+            $validationErrors["Text"] = "Text field cannot be blank";
         }
 
         if (empty($this->Type)) {
@@ -96,7 +99,7 @@ class CommunicationItem extends Model
         $simpleEmail = new SimpleEmail();
 
         $simpleEmail->setSubject($this->Subject);
-        $simpleEmail->setText($this->TextBody);
+        $simpleEmail->setText($this->Text);
         $simpleEmail->addRecipient($this->RecipientEmail, $this->RecipientName);
         $simpleEmail->setSender($this->SenderEmail, $this->SenderName);
         $simpleEmail->setHtml($this->HtmlBody);

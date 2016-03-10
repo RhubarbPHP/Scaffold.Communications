@@ -15,7 +15,7 @@ class CommunicationEmailTest extends CommunicationTestCase
         $communicationEmail->RecipientEmail = "john.smith@outlook.com";
         $communicationEmail->SenderName = "Jane Smith";
         $communicationEmail->SenderEmail = "jane.smith@outlook.com";
-        $communicationEmail->TextBody = "Michael went to mow, went to mow a meadow.";
+        $communicationEmail->Text = "Michael went to mow, went to mow a meadow.";
         $communicationEmail->HtmlBody = "<p>Michael went to mow, went to mow a meadow.</p>";
         $communicationEmail->addAttachment("file_location.txt");
         $communicationEmail->addAttachment("file_location1.txt", "TestFakeFileName");
@@ -28,7 +28,7 @@ class CommunicationEmailTest extends CommunicationTestCase
         $this->assertEquals($communicationEmail->RecipientEmail, current($email->getRecipients())->email, "RecipientEmail don't match");
         $this->assertEquals($communicationEmail->SenderName, $email->getSender()->name, "SenderName don't match");
         $this->assertEquals($communicationEmail->SenderEmail,$email->getSender()->email, "RecipientEmail don't match");
-        $this->assertEquals($communicationEmail->TextBody,$email->getText(), "TextBody don't match");
+        $this->assertEquals($communicationEmail->Text,$email->getText(), "Text doesn't match");
         $this->assertEquals($communicationEmail->HtmlBody,$email->getHtml(), "HtmlBody don't match");
         $this->assertEquals($communicationEmail->Attachments, $email->getAttachments(), "Attachments don't match");
     }
