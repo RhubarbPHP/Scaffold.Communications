@@ -6,7 +6,7 @@ use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
-use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
 
@@ -77,7 +77,7 @@ class CommunicationProcessorTest extends CommunicationTestCase
         $noOfRecipients = 6;
         $communication = $this->createCommunicationWithMultipleRecipients(new RhubarbDateTime("now"), $noOfRecipients);
 
-        $communicationEmail = $communication->Emails[$noOfRecipients - 1];
+        $communicationEmail = $communication->Items[$noOfRecipients - 1];
         $communicationEmail->Sent = true;
         $communicationEmail->save();
 
@@ -87,7 +87,7 @@ class CommunicationProcessorTest extends CommunicationTestCase
     }
 
     /**
-     * @return CommunicationEmail
+     * @return CommunicationItem
      */
     private function createCommunication($dateToSend)
     {

@@ -8,7 +8,7 @@ use Rhubarb\Crown\Sendables\Sendable;
 use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
 use Rhubarb\Scaffolds\Communications\BackgroundTasks\CommunicationBackgroundTask;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
-use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 
 class CommunicationEmailProvider extends EmailProvider
@@ -19,7 +19,7 @@ class CommunicationEmailProvider extends EmailProvider
         if (CommunicationProcessor::getEmailProvider() instanceof UnitTestingEmailProvider) {
             $communication->Completed = true;
             $communication->save();
-            foreach ($communication->Emails as $communicationEmail) {
+            foreach ($communication->Items as $communicationEmail) {
                 $communicationEmail->Sent = true;
                 $communicationEmail->save();
             }

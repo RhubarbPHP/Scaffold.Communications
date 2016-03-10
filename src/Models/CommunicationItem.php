@@ -19,40 +19,31 @@ use Rhubarb\Stem\Schema\Columns\StringColumn;
 use Rhubarb\Stem\Schema\ModelSchema;
 
 /**
- * @property int $CommunicationEmailID
+ * @property int $CommunicationItemID
  * @property int $CommunicationID
- * @property string $RecipientName
- * @property string $RecipientEmail
- * @property string $SenderName
- * @property string $SenderEmail
- * @property string $Subject
- * @property string $HtmlBody
+ * @property string $Recipient
  * @property string $TextBody
- * @property string $Attachments
  * @property RhubarbDateTime $DateCreated
  * @property RhubarbDateTime $DateSent
  * @property bool $Sent
+ * @property mixed $Data
  */
-class CommunicationEmail extends Model
+class CommunicationItem extends Model
 {
     protected function createSchema()
     {
-        $schema = new ModelSchema("tblCommunicationEmail");
+        $schema = new ModelSchema("tblCommunicationItem");
 
         $schema->addColumn(
-            new AutoIncrementColumn("CommunicationEmailID"),
+            new AutoIncrementColumn("CommunicationItemID"),
             new ForeignKeyColumn("CommunicationID"),
-            new StringColumn("RecipientName", 70),
-            new StringColumn("RecipientEmail", 200),
-            new StringColumn("SenderName", 100),
-            new StringColumn("SenderEmail", 100),
-            new StringColumn("Subject", 160),
-            new LongStringColumn("HtmlBody"),
+            new StringColumn("Type",50),
+            new StringColumn("Recipient", 200),
             new LongStringColumn("TextBody"),
-            new JsonColumn("Attachments"),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
-            new BooleanColumn("Sent", false)
+            new BooleanColumn("Sent", false),
+            new JsonColumn("Data", "", true)
         );
 
         return $schema;
@@ -73,16 +64,16 @@ class CommunicationEmail extends Model
     {
         $validationErrors = parent::getConsistencyValidationErrors();
 
-        if (empty($this->RecipientEmail)) {
-            $validationErrors["RecipientEmail"] = "RecipientEmail field cannot be empty";
-        }
-
-        if (empty($this->SenderEmail)) {
-            $validationErrors["SenderEmail"] = "SenderEmail field cannot be blank";
+        if (empty($this->Recipient)) {
+            $validationErrors["Recipient"] = "Recipient field cannot be empty";
         }
 
         if (empty($this->TextBody)) {
             $validationErrors["TextBody"] = "TextBody field cannot be blank";
+        }
+
+        if (empty($this->Type)) {
+            $validationErrors["Type"] = "Type field cannot be blank";
         }
 
         return $validationErrors;

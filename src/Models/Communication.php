@@ -18,7 +18,7 @@ use Rhubarb\Stem\Schema\ModelSchema;
 /**
  * @property int $CommunicationID
  * @property \DateTime $DateCreated
- * @property string $Name
+ * @property string Title
  * @property \DateTime $DateCompleted
  * @property bool $Completed
  */
@@ -27,11 +27,11 @@ class Communication extends Model
     public static function fromEmail(Email $email)
     {
         $communication = new Communication();
-        $communication->Name = $email->getSubject();
+        $communication->Title = $email->getSubject();
         $communication->save();
 
         foreach ($email->getRecipients() as $recipient) {
-            $communicationEmail = new CommunicationEmail();
+            $communicationEmail = new CommunicationItem();
             $communicationEmail->RecipientName = $recipient->name;
             $communicationEmail->RecipientEmail = $recipient->email;
             $communicationEmail->SenderName = $email->getSender()->name;
@@ -41,7 +41,7 @@ class Communication extends Model
             $communicationEmail->Subject = $email->getSubject();
             $communicationEmail->Attachments = $email->getAttachments();
 
-            $communication->Emails->append($communicationEmail);
+            $communication->Items->append($communicationEmail);
         }
 
         return $communication;
@@ -64,7 +64,7 @@ class Communication extends Model
 
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationID"),
-            new StringColumn("Name", 150),
+            new StringColumn("Title", 150),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateCompleted"),
             new DateTimeColumn("DateToSend"),

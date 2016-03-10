@@ -6,7 +6,7 @@ use Codeception\TestCase\Test;
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Scaffolds\Communications\EmailProviders\CommunicationEmailProvider;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
-use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 
 abstract class CommunicationTestCase extends Test
 {
@@ -15,7 +15,7 @@ abstract class CommunicationTestCase extends Test
         parent::_before();
 
         Communication::clearObjectCache();
-        CommunicationEmail::clearObjectCache();
+        CommunicationItem::clearObjectCache();
     }
 
     /**

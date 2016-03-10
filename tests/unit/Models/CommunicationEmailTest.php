@@ -2,14 +2,14 @@
 
 namespace Rhubarb\Scaffolds\Communications\Tests\Models;
 
-use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
 
 class CommunicationEmailTest extends CommunicationTestCase
 {
     public function testEmailExtractionFromCommunicationEmail()
     {
-        $communicationEmail = new CommunicationEmail();
+        $communicationEmail = new CommunicationItem();
         $communicationEmail->Subject = "The three billy goats";
         $communicationEmail->RecipientName = "John Smith";
         $communicationEmail->RecipientEmail = "john.smith@outlook.com";

@@ -15,7 +15,7 @@ class CommunicationsSolutionSchema extends SolutionSchema
         parent::__construct(0.1);
 
         $this->addModel("Communication", __NAMESPACE__ . '\Communication', 0.1);
-        $this->addModel("CommunicationEmail", __NAMESPACE__ . '\CommunicationEmail', 0.1);
+        $this->addModel("CommunicationItem", __NAMESPACE__ . '\CommunicationItem', 0.1);
     }
 
     protected function defineRelationships()
@@ -26,7 +26,7 @@ class CommunicationsSolutionSchema extends SolutionSchema
             [
                 "Communication" =>
                 [
-                    "Emails" => "CommunicationEmail.CommunicationID"
+                    "Items" => "CommunicationItem.CommunicationID"
                 ]
             ]
         );

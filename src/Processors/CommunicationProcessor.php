@@ -5,8 +5,9 @@ namespace Rhubarb\Scaffolds\Communications\Processors;
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Logging\Log;
+use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
-use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 
 /**
  * Class CommunicationProcessor
@@ -18,7 +19,7 @@ final class CommunicationProcessor
 
     final public static function sendCommunication(Communication $communication)
     {
-        Log::debug("Considering to send CommunicationEmail with ID: " . $communication->CommunicationID, "COMMS");
+        Log::debug("Considering to send CommunicationItem with ID: " . $communication->CommunicationID, "COMMS");
 
         $currentDateTime = new RhubarbDateTime("now");
 
@@ -33,17 +34,17 @@ final class CommunicationProcessor
 
     final private static function sendEmails(Communication $communication)
     {
-        foreach($communication->Emails as $email){
+        foreach($communication->Items as $email){
             self::sendEmail($email);
         }
     }
 
-    final private static function sendEmail(CommunicationEmail $communicationEmail)
+    final private static function sendEmail(CommunicationItem $communicationEmail)
     {
         if ($communicationEmail->Sent){
             Log::warning("Attempt blocked to send already sent email", "COMMS",
                 [
-                    "CommunicationEmailID" => $communicationEmail->CommunicationEmailID,
+                    "CommunicationItemID" => $communicationEmail->CommunicationItemID,
                     "EmailProvider" => self::$emailProviderClassName
                 ]
             );
@@ -51,7 +52,7 @@ final class CommunicationProcessor
         }
 
         $emailProvider = self::getEmailProvider();
-        $emailProvider->sendEmail($communicationEmail->getEmail());
+        $emailProvider->send($communicationEmail->getEmail());
 
         $communicationEmail->Sent = true;
         $communicationEmail->save();
@@ -69,5 +70,18 @@ final class CommunicationProcessor
     {
         $class = self::$emailProviderClassName;
         return new $class();
+    }
+
+    public static function sendPackage(CommunicationPackage $package)
+    {
+        $communication = new Communication();
+        $communication->Title = $package->title;
+        $communication->save();
+
+        $item = new CommunicationItem();
+        $item->Recipient = current($package->getSendables()[0]->getRecipients())->email;
+        $item->TextBody = "asdf";
+        $item->Type = "123";
+        $item->save();
     }
 }
