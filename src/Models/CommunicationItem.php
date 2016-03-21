@@ -94,23 +94,9 @@ class CommunicationItem extends Model
     /**
      * @return Email
      */
-    public function getEmail()
+    public function getSendable()
     {
-        $simpleEmail = new SimpleEmail();
-
-        $simpleEmail->setSubject($this->Subject);
-        $simpleEmail->setText($this->Text);
-        $simpleEmail->addRecipient($this->RecipientEmail, $this->RecipientName);
-        $simpleEmail->setSender($this->SenderEmail, $this->SenderName);
-        $simpleEmail->setHtml($this->HtmlBody);
-
-        if (!empty($this->Attachments)) {
-            foreach ($this->Attachments as $attachment) {
-                $simpleEmail->addAttachment($attachment->path, $attachment->name);
-            }
-        }
-
-        return $simpleEmail;
+        return SimpleEmail::fromArray($this->Data);
     }
 
     public function addAttachment($path, $newName = "")

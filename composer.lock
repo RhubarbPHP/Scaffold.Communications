@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "hash": "f678953431797d345488c7bca91b820b",
+    "content-hash": "b44704f66e8ec40b6749fd32e80fbfa8",
     "packages": [
         {
             "name": "components/jquery",
@@ -182,12 +183,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/RhubarbPHP/Module.Stem.git",
-                "reference": "ee3e1b6cb93a347030d263a94d73ef299cfc8024"
+                "reference": "8d762e001d7dc9165af5d5e15684b76d373f7add"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RhubarbPHP/Module.Stem/zipball/ee3e1b6cb93a347030d263a94d73ef299cfc8024",
-                "reference": "ee3e1b6cb93a347030d263a94d73ef299cfc8024",
+                "url": "https://api.github.com/repos/RhubarbPHP/Module.Stem/zipball/8d762e001d7dc9165af5d5e15684b76d373f7add",
+                "reference": "8d762e001d7dc9165af5d5e15684b76d373f7add",
                 "shasum": ""
             },
             "require": {
@@ -226,7 +227,7 @@
                 "orm",
                 "php"
             ],
-            "time": "2016-03-03 13:07:38"
+            "time": "2016-03-16 11:43:49"
         },
         {
             "name": "rhubarbphp/rhubarb",
@@ -234,12 +235,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/RhubarbPHP/Rhubarb.git",
-                "reference": "3059afe617aa1500415edeef989c360a6ad2e517"
+                "reference": "d1543956b39d811c466b7550527e4d0267dd6be6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RhubarbPHP/Rhubarb/zipball/3059afe617aa1500415edeef989c360a6ad2e517",
-                "reference": "3059afe617aa1500415edeef989c360a6ad2e517",
+                "url": "https://api.github.com/repos/RhubarbPHP/Rhubarb/zipball/d1543956b39d811c466b7550527e4d0267dd6be6",
+                "reference": "d1543956b39d811c466b7550527e4d0267dd6be6",
                 "shasum": ""
             },
             "require": {
@@ -276,7 +277,7 @@
                 "framework",
                 "php"
             ],
-            "time": "2016-03-04 17:16:47"
+            "time": "2016-03-16 11:42:35"
         },
         {
             "name": "rhubarbphp/scaffold-background-tasks",
@@ -924,16 +925,16 @@
         },
         {
             "name": "phpmd/phpmd",
-            "version": "2.4.1",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpmd/phpmd.git",
-                "reference": "1ce4c586f4071d27a82421e56ae0e9864c89094d"
+                "reference": "fccbdb6b222f6d7a6d35af1c396ba5435cec76a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/1ce4c586f4071d27a82421e56ae0e9864c89094d",
-                "reference": "1ce4c586f4071d27a82421e56ae0e9864c89094d",
+                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/fccbdb6b222f6d7a6d35af1c396ba5435cec76a9",
+                "reference": "fccbdb6b222f6d7a6d35af1c396ba5435cec76a9",
                 "shasum": ""
             },
             "require": {
@@ -985,7 +986,7 @@
                 "phpmd",
                 "pmd"
             ],
-            "time": "2016-03-08 21:43:36"
+            "time": "2016-03-10 17:17:44"
         },
         {
             "name": "phpspec/prophecy",
@@ -1291,16 +1292,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.23",
+            "version": "4.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483"
+                "reference": "a1066c562c52900a142a0e2bbf0582994671385e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6e351261f9cd33daf205a131a1ba61c6d33bd483",
-                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a1066c562c52900a142a0e2bbf0582994671385e",
+                "reference": "a1066c562c52900a142a0e2bbf0582994671385e",
                 "shasum": ""
             },
             "require": {
@@ -1359,7 +1360,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-02-11 14:56:33"
+            "time": "2016-03-14 06:16:08"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2710,12 +2711,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tan-tan-kanarek/github-php-client.git",
-                "reference": "b877918dbd7c9e51796dd8d70cd74c958e1002e9"
+                "reference": "1b396fa73cc5913e179f600938f50555b6f0775b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tan-tan-kanarek/github-php-client/zipball/b877918dbd7c9e51796dd8d70cd74c958e1002e9",
-                "reference": "b877918dbd7c9e51796dd8d70cd74c958e1002e9",
+                "url": "https://api.github.com/repos/tan-tan-kanarek/github-php-client/zipball/1b396fa73cc5913e179f600938f50555b6f0775b",
+                "reference": "1b396fa73cc5913e179f600938f50555b6f0775b",
                 "shasum": ""
             },
             "type": "library",
@@ -2729,7 +2730,7 @@
                 "proprietary"
             ],
             "description": "PHP client for the Github API",
-            "time": "2016-02-08 11:02:03"
+            "time": "2016-03-08 17:35:52"
         },
         {
             "name": "theseer/fdomdocument",

@@ -10,9 +10,9 @@ use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 
 abstract class CommunicationTestCase extends Test
 {
-    protected function __before()
+    protected function setUp()
     {
-        parent::_before();
+        parent::setUp();
 
         Communication::clearObjectCache();
         CommunicationItem::clearObjectCache();

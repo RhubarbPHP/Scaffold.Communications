@@ -52,7 +52,7 @@ final class CommunicationProcessor
         }
 
         $emailProvider = self::getEmailProvider();
-        $emailProvider->send($communicationEmail->getEmail());
+        $emailProvider->send($communicationEmail->getSendable());
 
         $communicationEmail->Sent = true;
         $communicationEmail->save();
@@ -78,13 +78,17 @@ final class CommunicationProcessor
         $communication->Title = $package->title;
         $communication->save();
 
-        $sendable = $package->getSendables()[0];
-        $item = new CommunicationItem();
-        $item->Recipient = current($sendable->getRecipients())->email;
-        $item->Text = $sendable->getText();
-        $item->Type = $sendable->getSendableType();
-        $item->SendableClassName = get_class($sendable);
-        $item->Data = $sendable->toArray();
-        $item->save();
+        foreach($package->getSendables() as $sendable) {
+            foreach($sendable->getRecipients() as $recipient ) {
+                $item = new CommunicationItem();
+                $item->Recipient = $recipient->email;
+                $item->Text = $sendable->getText();
+                $item->Type = $sendable->getSendableType();
+                $item->SendableClassName = get_class($sendable);
+                $item->Data = $sendable->toArray();
+                $item->CommunicationID = $communication->CommunicationID;
+                $item->save();
+            }
+        }
     }
 }

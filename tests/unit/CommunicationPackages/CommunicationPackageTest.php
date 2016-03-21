@@ -58,8 +58,28 @@ class CommunicationPackageTest extends CommunicationTestCase
         $this->assertEquals($email->getText(), $item->Text, "The text value wasn't set correctly");
         $this->assertEquals(get_class($email), $item->SendableClassName, "The class name wasn't set correctly");
         $this->assertEquals($email->toArray(), $item->Data, "The sendable wasn't encoded into data correctly");
+        $this->assertEquals($communication->UniqueIdentifier, $item->CommunicationID,
+            "The item wasn't attached to the communication properly");
 
-        // Next test is probably to test multiple sendables in a package.
+
+    }
+
+    public function testPackageWithMultipleSendables()
+    {
+        $email = $this->createEmailAndAddToPackage();
+        $email->addRecipient("test@test.com");
+        $email->setSubject("A test email");
+        $email->setText("This is the end, my lonely friend, the end.");
+
+        $email = $this->createEmailAndAddToPackage();
+        $email->addRecipient("test@test.com");
+        $email->setSubject("A second test email");
+        $email->setText("This is the end, my lonely friend, the end.");
+
+        $this->package->title = "A test communication";
+        $this->package->send();
+
+        $this->assertCount(2, CommunicationItem::find());
     }
 
     /**

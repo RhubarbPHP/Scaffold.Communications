@@ -37,19 +37,14 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
         $this->assertCount(1, CommunicationItem::find(), "CommunicationItem count was not 1");
 
         $communication = Communication::findLast();
-        $this->assertEquals($email->getSubject(), $communication->Name, "Subject not set correctly");
+        $this->assertEquals($email->getSubject(), $communication->Title, "Subject not set correctly");
         $this->assertTrue($communication->DateCreated->isValidDateTime(), "Date Created not set correctly");
 
         $communicationEmail = CommunicationItem::findLast();
 
         $this->assertEquals($communicationEmail->CommunicationID, $communication->CommunicationID);
 
-        $this->assertEquals($email->getSubject(), $communicationEmail->Subject, "Subject not set correctly" );
-        $this->assertEquals(current($email->getRecipients())->name, $communicationEmail->RecipientName, "Name not set correctly");
-        $this->assertEquals(current($email->getRecipients())->email, $communicationEmail->RecipientEmail, "Name not set correctly");
-        $this->assertEquals($email->getSender()->name, $communicationEmail->SenderName, "Sender email not set correctly");
-        $this->assertEquals($email->getSender()->email, $communicationEmail->SenderEmail, "Sender email not set correctly");
-        $this->assertEquals($email->getHtml(), $communicationEmail->HtmlBody, "Html Body not set correctly");
+        $this->assertEquals(current($email->getRecipients())->email, $communicationEmail->Recipient, "Name not set correctly");
         $this->assertEquals($email->getText(), $communicationEmail->Text, "Text Body not set correctly");
 
         $email->addRecipient("jdoe@hotmail.com", "Jane Doe");
@@ -60,8 +55,6 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
 
         $communicationEmail = CommunicationItem::findLast();
 
-        $this->assertEquals($email->getSubject(), $communicationEmail->Subject, "Subject not set correctly");
-        $this->assertEquals("Jane Doe", $communicationEmail->RecipientName, "Name not set correctly");
-        $this->assertEquals("jdoe@hotmail.com", $communicationEmail->RecipientEmail, "Name not set correctly");
+        $this->assertEquals("jdoe@hotmail.com", $communicationEmail->Recipient, "Recipient not set correctly");
     }
 }
