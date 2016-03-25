@@ -36,7 +36,7 @@ class CommunicationPackageTest extends CommunicationTestCase
     public function testPackageSends()
     {
         $email = $this->createEmailAndAddToPackage();
-        $email->addRecipient("test@test.com");
+        $email->addRecipientByEmail("test@test.com");
         $email->setSubject("A test email");
         $email->setText("This is the end, my lonely friend, the end.");
 
@@ -67,12 +67,12 @@ class CommunicationPackageTest extends CommunicationTestCase
     public function testPackageWithMultipleSendables()
     {
         $email = $this->createEmailAndAddToPackage();
-        $email->addRecipient("test@test.com");
+        $email->addRecipientByEmail("test@test.com");
         $email->setSubject("A test email");
         $email->setText("This is the end, my lonely friend, the end.");
 
         $email = $this->createEmailAndAddToPackage();
-        $email->addRecipient("test@test.com");
+        $email->addRecipientByEmail("test@test.com");
         $email->setSubject("A second test email");
         $email->setText("This is the end, my lonely friend, the end.");
 
@@ -80,6 +80,11 @@ class CommunicationPackageTest extends CommunicationTestCase
         $this->package->send();
 
         $this->assertCount(2, CommunicationItem::find());
+    }
+
+    public function testPackageIsActuallySent()
+    {
+
     }
 
     /**

@@ -25,13 +25,14 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
 
         $email = new SimpleEmail();
         $email->setSubject("A fine day in the park");
-        $email->addRecipient("test@test.com", "Joe Bloggs");
+        $email->addRecipientByEmail("test@test.com", "Joe Bloggs");
         $email->setHtml("<html><head>Test Head</head><body>Test Body</body></html>");
         $email->setText("Test Text Body");
 
-        CommunicationProcessor::setEmailProviderClassName(UnitTestingEmailProvider::class);
-        EmailProvider::setDefaultEmailProviderClassName(CommunicationEmailProvider::class);
-        EmailProvider::getDefaultProvider()->send($email);
+        CommunicationProcessor::setProviderClassName(EmailProvider::class, UnitTestingEmailProvider::class);
+
+        EmailProvider::setProviderClassName(CommunicationEmailProvider::class);
+        EmailProvider::getProvider()->send($email);
 
         $this->assertCount(1, Communication::find(), "Communication count was not 1");
         $this->assertCount(1, CommunicationItem::find(), "CommunicationItem count was not 1");
@@ -44,17 +45,17 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
 
         $this->assertEquals($communicationEmail->CommunicationID, $communication->CommunicationID);
 
-        $this->assertEquals(current($email->getRecipients())->email, $communicationEmail->Recipient, "Name not set correctly");
+        $this->assertEquals($email->getRecipients()[0]->__toString(), $communicationEmail->Recipient, "Name not set correctly");
         $this->assertEquals($email->getText(), $communicationEmail->Text, "Text Body not set correctly");
 
-        $email->addRecipient("jdoe@hotmail.com", "Jane Doe");
+        $email->addRecipientByEmail("jdoe@hotmail.com", "Jane Doe");
 
-        EmailProvider::getDefaultProvider()->send($email);
+        EmailProvider::getProvider()->send($email);
 
         $this->assertCount(3, CommunicationItem::find(), "CommunicationItem count was not 3 (2 recipients in email)");
 
         $communicationEmail = CommunicationItem::findLast();
 
-        $this->assertEquals("jdoe@hotmail.com", $communicationEmail->Recipient, "Recipient not set correctly");
+        $this->assertEquals('"Jane Doe" <jdoe@hotmail.com>', $communicationEmail->Recipient, "Recipient not set correctly");
     }
 }

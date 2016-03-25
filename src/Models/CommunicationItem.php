@@ -96,7 +96,9 @@ class CommunicationItem extends Model
      */
     public function getSendable()
     {
-        return SimpleEmail::fromArray($this->Data);
+        $className = $this->SendableClassName;
+
+        return $className::fromArray($this->Data);
     }
 
     public function addAttachment($path, $newName = "")

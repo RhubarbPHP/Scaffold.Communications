@@ -21,32 +21,11 @@ use Rhubarb\Stem\Schema\ModelSchema;
  * @property string Title
  * @property \DateTime $DateCompleted
  * @property bool $Completed
+ *
+ * @property CommunicationItem[] $Items The items connected with the communication
  */
 class Communication extends Model
 {
-    public static function fromEmail(Email $email)
-    {
-        $communication = new Communication();
-        $communication->Title = $email->getSubject();
-        $communication->save();
-
-        foreach ($email->getRecipients() as $recipient) {
-            $communicationEmail = new CommunicationItem();
-            $communicationEmail->RecipientName = $recipient->name;
-            $communicationEmail->RecipientEmail = $recipient->email;
-            $communicationEmail->SenderName = $email->getSender()->name;
-            $communicationEmail->SenderEmail = $email->getSender()->email;
-            $communicationEmail->HtmlBody = $email->getHtml();
-            $communicationEmail->Text = $email->getText();
-            $communicationEmail->Subject = $email->getSubject();
-            $communicationEmail->Attachments = $email->getAttachments();
-
-            $communication->Items->append($communicationEmail);
-        }
-
-        return $communication;
-    }
-
     public function setCompleted($newValue)
     {
         $this->setModelValue("Completed", $newValue);

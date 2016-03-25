@@ -3,6 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications\Tests\Models;
 
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
+use Rhubarb\Crown\Tests\Fixtures\Emails\UnitTestingTemplateEmail;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
@@ -12,7 +13,7 @@ class CommunicationItemTest extends CommunicationTestCase
     public function testEmailExtractionFromCommunicationEmail()
     {
         $email = new SimpleEmail();
-        $email->addRecipient("John Smith", "john.smith@outlook.com");
+        $email->addRecipientByEmail("John Smith", "john.smith@outlook.com");
         $email->setSender("Jane Smith", "jane.smith@outlook.com");
         $email->setSubject("The three billy goats");
         $email->setText("Michael went to mow, went to mow a meadow.");
@@ -33,5 +34,25 @@ class CommunicationItemTest extends CommunicationTestCase
         $this->assertInstanceOf(SimpleEmail::class, $derivedEmail);
 
         // Next test is that a different sendable generates the correct type when getSendable is called.
+        $unitTestingEmail = new UnitTestingTemplateEmail(
+            [
+                'Name' => "",
+                'Age' => "",
+                'HairColour' => ""
+            ]);
+
+        $unitTestingEmail->addRecipientByEmail("billybob@gmail.com");
+
+        $package = new CommunicationPackage();
+        $package->addSendable($unitTestingEmail);
+        $package->title = $unitTestingEmail->getSubject();
+        $package->send();
+
+        $item = CommunicationItem::findLast();
+
+        $derivedEmail = $item->getSendable();
+
+        $this->assertInstanceOf( UnitTestingTemplateEmail::class, $derivedEmail);
     }
+
 }
