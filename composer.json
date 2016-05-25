@@ -20,9 +20,9 @@
     "bin-dir": "bin/"
   },
   "require": {
-    "rhubarbphp/rhubarb": "1.0.*-dev",
-    "rhubarbphp/module-stem": "1.0.*-dev",
-    "rhubarbphp/scaffold-background-tasks": "1.0.*-dev"
+    "rhubarbphp/rhubarb": "*",
+    "rhubarbphp/module-stem": "*",
+    "rhubarbphp/scaffold-background-tasks": "*"
   },
   "require-dev": {
     "codeception/codeception": "2.1.4",
