@@ -29,6 +29,6 @@ class CommunicationPackage
 
     public function send()
     {
-        CommunicationProcessor::sendPackage($this);
+        return CommunicationProcessor::sendPackage($this);
     }
 }

@@ -104,5 +104,7 @@ final class CommunicationProcessor
                 $item->save();
             }
         }
+
+        return $communication;
     }
 }
