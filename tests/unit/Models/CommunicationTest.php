@@ -4,7 +4,7 @@ namespace Rhubarb\Scaffolds\Communications\Tests\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
-use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 

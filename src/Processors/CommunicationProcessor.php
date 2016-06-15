@@ -3,10 +3,12 @@
 namespace Rhubarb\Scaffolds\Communications\Processors;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
-use Rhubarb\Crown\Email\SimpleEmail;
+use Rhubarb\Crown\DependencyInjection\Container;
+use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Logging\Log;
+use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
-use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 
 /**
  * Class CommunicationProcessor
@@ -16,58 +18,91 @@ final class CommunicationProcessor
 {
     private static $emailProviderClassName;
 
+    private static $container;
+
+    private static function getContainer()
+    {
+        if (self::$container == null){
+            self::$container = new Container();
+        }
+
+        return self::$container;
+    }
+
     final public static function sendCommunication(Communication $communication)
     {
-        Log::debug("Considering to send CommunicationEmail with ID: " . $communication->CommunicationID, "COMMS");
+        Log::debug("Considering to send CommunicationItem with ID: " . $communication->CommunicationID, "COMMS");
 
         $currentDateTime = new RhubarbDateTime("now");
 
         if ($communication->shouldSendCommunication($currentDateTime))
         {
-            self::sendEmails($communication);
+            self::sendItems($communication);
 
             $communication->Completed = true;
             $communication->save();
         }
     }
 
-    final private static function sendEmails(Communication $communication)
+    final private static function sendItems(Communication $communication)
     {
-        foreach($communication->Emails as $email){
-            self::sendEmail($email);
+        foreach($communication->Items as $item){
+            self::sendItem($item);
         }
     }
 
-    final private static function sendEmail(CommunicationEmail $communicationEmail)
+    final private static function sendItem(CommunicationItem $item)
     {
-        if ($communicationEmail->Sent){
+        if ($item->Sent){
             Log::warning("Attempt blocked to send already sent email", "COMMS",
                 [
-                    "CommunicationEmailID" => $communicationEmail->CommunicationEmailID,
+                    "CommunicationItemID" => $item->CommunicationItemID,
                     "EmailProvider" => self::$emailProviderClassName
                 ]
             );
             return;
         }
 
-        $emailProvider = self::getEmailProvider();
-        $emailProvider->sendEmail($communicationEmail->getEmail());
+        $sendable = $item->getSendable();
+        $providerClass = $sendable->getProviderClassName();
 
-        $communicationEmail->Sent = true;
-        $communicationEmail->save();
+        $provider = self::getContainer()->instance($providerClass);
+        $provider->send($sendable);
 
-        Log::debug("Sending communication by Email", "COMMS", ["CommunicationID" => $communicationEmail->CommunicationID,
+        $item->Sent = true;
+        $item->save();
+
+        Log::debug("Sending communication by Email", "COMMS", ["CommunicationID" => $item->CommunicationID,
         "EmailProvider" => self::$emailProviderClassName]);
     }
 
-    public static function setEmailProviderClassName($emailProviderClassName)
+    public static function setProviderClassName($sendableProviderBaseClassName, $concreteProviderClassName)
     {
-        self::$emailProviderClassName = $emailProviderClassName;
+        self::getContainer()->registerClass($sendableProviderBaseClassName, $concreteProviderClassName);
     }
 
-    public static function getEmailProvider()
+    public static function sendPackage(CommunicationPackage $package)
     {
-        $class = self::$emailProviderClassName;
-        return new $class();
+        $communication = new Communication();
+        $communication->Title = $package->title;
+        $communication->save();
+
+        foreach($package->getSendables() as $sendable) {
+            foreach($sendable->getRecipients() as $recipient ) {
+
+                $clone = clone $sendable;
+                $clone->clearRecipients();
+                $clone->addRecipient($recipient);
+
+                $item = new CommunicationItem();
+                $item->Recipient = (string) $recipient;
+                $item->Text = $clone->getText();
+                $item->Type = $clone->getSendableType();
+                $item->SendableClassName = get_class($clone);
+                $item->Data = $clone->toArray();
+                $item->CommunicationID = $communication->CommunicationID;
+                $item->save();
+            }
+        }
     }
 }

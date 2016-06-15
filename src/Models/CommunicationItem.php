@@ -3,8 +3,8 @@
 namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
-use Rhubarb\Crown\Email\Email;
-use Rhubarb\Crown\Email\SimpleEmail;
+use Rhubarb\Crown\Sendables\Email\Email;
+use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
@@ -19,37 +19,31 @@ use Rhubarb\Stem\Schema\Columns\StringColumn;
 use Rhubarb\Stem\Schema\ModelSchema;
 
 /**
- * @property int $CommunicationEmailID
+ * @property int $CommunicationItemID
  * @property int $CommunicationID
- * @property string $RecipientName
- * @property string $RecipientEmail
- * @property string $SenderName
- * @property string $SenderEmail
- * @property string $Subject
- * @property string $HtmlBody
- * @property string $TextBody
- * @property string $Attachments
+ * @property string $Type
+ * @property string $SendableClassName
+ * @property string $Recipient
+ * @property string $Text
+ * @property mixed $Data
  * @property RhubarbDateTime $DateCreated
  * @property RhubarbDateTime $DateSent
  * @property bool $Sent
  */
-class CommunicationEmail extends Model
+class CommunicationItem extends Model
 {
     protected function createSchema()
     {
-        $schema = new ModelSchema("tblCommunicationEmail");
+        $schema = new ModelSchema("tblCommunicationItem");
 
         $schema->addColumn(
-            new AutoIncrementColumn("CommunicationEmailID"),
+            new AutoIncrementColumn("CommunicationItemID"),
             new ForeignKeyColumn("CommunicationID"),
-            new StringColumn("RecipientName", 70),
-            new StringColumn("RecipientEmail", 200),
-            new StringColumn("SenderName", 100),
-            new StringColumn("SenderEmail", 100),
-            new StringColumn("Subject", 160),
-            new LongStringColumn("HtmlBody"),
-            new LongStringColumn("TextBody"),
-            new JsonColumn("Attachments"),
+            new StringColumn("Type",50),
+            new StringColumn("SendableClassName",150),
+            new StringColumn("Recipient", 200),
+            new LongStringColumn("Text"),
+            new JsonColumn("Data", "", true),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new BooleanColumn("Sent", false)
@@ -73,16 +67,16 @@ class CommunicationEmail extends Model
     {
         $validationErrors = parent::getConsistencyValidationErrors();
 
-        if (empty($this->RecipientEmail)) {
-            $validationErrors["RecipientEmail"] = "RecipientEmail field cannot be empty";
+        if (empty($this->Recipient)) {
+            $validationErrors["Recipient"] = "Recipient field cannot be empty";
         }
 
-        if (empty($this->SenderEmail)) {
-            $validationErrors["SenderEmail"] = "SenderEmail field cannot be blank";
+        if (empty($this->Text)) {
+            $validationErrors["Text"] = "Text field cannot be blank";
         }
 
-        if (empty($this->TextBody)) {
-            $validationErrors["TextBody"] = "TextBody field cannot be blank";
+        if (empty($this->Type)) {
+            $validationErrors["Type"] = "Type field cannot be blank";
         }
 
         return $validationErrors;
@@ -100,23 +94,11 @@ class CommunicationEmail extends Model
     /**
      * @return Email
      */
-    public function getEmail()
+    public function getSendable()
     {
-        $simpleEmail = new SimpleEmail();
+        $className = $this->SendableClassName;
 
-        $simpleEmail->setSubject($this->Subject);
-        $simpleEmail->setText($this->TextBody);
-        $simpleEmail->addRecipient($this->RecipientEmail, $this->RecipientName);
-        $simpleEmail->setSender($this->SenderEmail, $this->SenderName);
-        $simpleEmail->setHtml($this->HtmlBody);
-
-        if (!empty($this->Attachments)) {
-            foreach ($this->Attachments as $attachment) {
-                $simpleEmail->addAttachment($attachment->path, $attachment->name);
-            }
-        }
-
-        return $simpleEmail;
+        return $className::fromArray($this->Data);
     }
 
     public function addAttachment($path, $newName = "")

@@ -3,10 +3,12 @@
 namespace Rhubarb\Scaffolds\Communications\Tests\Providers;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
-use Rhubarb\Crown\Email\SimpleEmail;
+use Rhubarb\Crown\Sendables\Email\EmailProvider;
+use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
+use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
-use Rhubarb\Scaffolds\Communications\Models\CommunicationEmail;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
 
@@ -16,7 +18,7 @@ class CommunicationProcessorTest extends CommunicationTestCase
     {
         parent::_before();
 
-        CommunicationProcessor::setEmailProviderClassName(UnitTestingEmailProvider::class);
+        CommunicationProcessor::setProviderClassName(EmailProvider::class, UnitTestingEmailProvider::class);
     }
 
     public function testSendCommunication()
@@ -77,26 +79,34 @@ class CommunicationProcessorTest extends CommunicationTestCase
         $noOfRecipients = 6;
         $communication = $this->createCommunicationWithMultipleRecipients(new RhubarbDateTime("now"), $noOfRecipients);
 
-        $communicationEmail = $communication->Emails[$noOfRecipients - 1];
+        $communicationEmail = $communication->Items[$noOfRecipients - 1];
         $communicationEmail->Sent = true;
         $communicationEmail->save();
 
         CommunicationProcessor::sendCommunication($communication);
 
+        $this->assertCount(1, UnitTestingEmailProvider::GetLastEmail()->getRecipients(),
+            "Communication scaffold should have unwrapped the recipients to individual email items. Each email item".
+            " should have just 1 recipient");
+
         $this->assertEquals("test@test5.com", current(UnitTestingEmailProvider::GetLastEmail()->getRecipients())->email);
     }
 
     /**
-     * @return CommunicationEmail
+     * @return CommunicationItem
      */
     private function createCommunication($dateToSend)
     {
         $email = new SimpleEmail();
         $email->setText("Test Message Body");
         $email->setSender("sender@gcdtech.com");
-        $email->addRecipient("test@test.com");
+        $email->addRecipientByEmail("test@test.com");
 
-        $communication = Communication::fromEmail($email);
+        $package = new CommunicationPackage();
+        $package->addSendable($email);
+        $package->send();
+
+        $communication = Communication::findLast();
 
         if ($dateToSend) {
             $communication->DateToSend = $dateToSend;
@@ -110,16 +120,19 @@ class CommunicationProcessorTest extends CommunicationTestCase
         $email->setText("Test Message Body");
         $email->setSender("sender@gcdtech.com");
         foreach (range(1, $noOfRecipients) as $i) {
-            $email->addRecipient("test@test" . $i . ".com");
+            $email->addRecipientByEmail("test@test" . $i . ".com");
         }
 
-        $communication = Communication::fromEmail($email);
+        $package = new CommunicationPackage();
+        $package->addSendable($email);
+        $package->send();
+
+        $communication = Communication::findLast();
 
         if ($dateToSend) {
             $communication->DateToSend = $dateToSend;
         }
+
         return $communication;
     }
-
-
 }
