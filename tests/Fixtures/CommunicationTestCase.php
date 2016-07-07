@@ -3,6 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications\Tests\Fixtures;
 
 use Codeception\TestCase\Test;
+use Rhubarb\Crown\Application;
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Tests\Fixtures\TestCases\RhubarbTestCase;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
@@ -17,8 +18,8 @@ abstract class CommunicationTestCase extends RhubarbTestCase
     {
         parent::setUp();
 
-        $this->application->registerModule(new CommunicationsModule());
-        $this->application->initialiseModules();
+        Application::current()->registerModule(new CommunicationsModule());
+        Application::current()->initialiseModules();
 
         Communication::clearObjectCache();
         CommunicationItem::clearObjectCache();

@@ -6,4 +6,4 @@ use Rhubarb\Crown\Application;
 use Rhubarb\Crown\Module;
 use Rhubarb\Scaffolds\Communications\CommunicationsModule;
 
-include __DIR__."/../vendor/rhubarbphp/rhubarb/platform/boot.php";
+include __DIR__."/../vendor/rhubarbphp/rhubarb/platform/execute-test.php";
