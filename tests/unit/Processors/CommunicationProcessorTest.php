@@ -89,7 +89,7 @@ class CommunicationProcessorTest extends CommunicationTestCase
             "Communication scaffold should have unwrapped the recipients to individual email items. Each email item".
             " should have just 1 recipient");
 
-        $this->assertEquals("test@test5.com", current(UnitTestingEmailProvider::GetLastEmail()->getRecipients())->email);
+        $this->assertEquals("test@test6.com", current(UnitTestingEmailProvider::GetLastEmail()->getRecipients())->email);
     }
 
     /**
@@ -103,14 +103,14 @@ class CommunicationProcessorTest extends CommunicationTestCase
         $email->addRecipientByEmail("test@test.com");
 
         $package = new CommunicationPackage();
+        if ($dateToSend) {
+            $package->dateToSend = $dateToSend;
+        }
         $package->addSendable($email);
         $package->send();
 
         $communication = Communication::findLast();
 
-        if ($dateToSend) {
-            $communication->DateToSend = $dateToSend;
-        }
         return $communication;
     }
 
@@ -124,14 +124,13 @@ class CommunicationProcessorTest extends CommunicationTestCase
         }
 
         $package = new CommunicationPackage();
+        if ($dateToSend) {
+            $package->dateToSend = $dateToSend;
+        }
         $package->addSendable($email);
         $package->send();
 
         $communication = Communication::findLast();
-
-        if ($dateToSend) {
-            $communication->DateToSend = $dateToSend;
-        }
 
         return $communication;
     }

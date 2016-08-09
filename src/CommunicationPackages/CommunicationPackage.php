@@ -2,6 +2,7 @@
 
 namespace Rhubarb\Scaffolds\Communications\CommunicationPackages;
 
+use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Sendable;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 
@@ -11,6 +12,11 @@ class CommunicationPackage
      * @var string The title of the communication
      */
     public $title;
+
+    /**
+     * @var RhubarbDateTime The Date to send the communication
+     */
+    public $dateToSend;
 
     /**
      * @var Sendable[]

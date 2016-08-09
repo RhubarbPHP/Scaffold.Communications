@@ -4,10 +4,14 @@ namespace Rhubarb\Scaffolds\Communications\Processors;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\DependencyInjection\Container;
+use Rhubarb\Crown\Exceptions\RhubarbException;
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Logging\Log;
 use Rhubarb\Scaffolds\Communications\BackgroundTasks\CommunicationBackgroundTask;
+use Rhubarb\Scaffolds\Communications\CaptureToCommunciationsProcessorInterface;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
+use Rhubarb\Scaffolds\Communications\EmailProviders\CommunicationEmailProvider;
+use Rhubarb\Scaffolds\Communications\Exceptions\InvalidProviderException;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 
@@ -66,8 +70,12 @@ final class CommunicationProcessor
 
         $sendable = $item->getSendable();
         $providerClass = $sendable->getProviderClassName();
+        $provider = self::getContainer()->getInstance($providerClass);
 
-        $provider = self::getContainer()->instance($providerClass);
+        if ($provider instanceof CaptureToCommunciationsProcessorInterface) {
+            throw new InvalidProviderException();
+        }
+
         $provider->send($sendable);
 
         $item->Sent = true;
@@ -86,6 +94,9 @@ final class CommunicationProcessor
     {
         $communication = new Communication();
         $communication->Title = $package->title;
+        if ($package->dateToSend) {
+            $communication->DateToSend = $package->dateToSend;
+        }
         $communication->save();
 
         foreach($package->getSendables() as $sendable) {

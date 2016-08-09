@@ -11,6 +11,7 @@ use Rhubarb\Crown\Sendables\Email\EmailProvider;
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
 use Rhubarb\Scaffolds\Communications\EmailProviders\CommunicationEmailProvider;
+use Rhubarb\Scaffolds\Communications\Exceptions\InvalidProviderException;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
@@ -57,5 +58,26 @@ class CommunicationEmailProviderTest extends CommunicationTestCase
         $communicationEmail = CommunicationItem::findLast();
 
         $this->assertEquals('"Jane Doe" <jdoe@hotmail.com>', $communicationEmail->Recipient, "Recipient not set correctly");
+    }
+
+    public function testCommunicationEmailProviderCantBeAProcessor()
+    {
+        $this->assertCount(0, CommunicationItem::find(), "CommunicationItem count was not 0");
+        $this->assertCount(0, Communication::find(), "Communication count was not 0");
+
+        $email = new SimpleEmail();
+        $email->setSubject("A fine day in the park");
+        $email->addRecipientByEmail("test@test.com", "Joe Bloggs");
+        $email->setHtml("<html><head>Test Head</head><body>Test Body</body></html>");
+        $email->setText("Test Text Body");
+
+        CommunicationProcessor::setProviderClassName(EmailProvider::class, CommunicationEmailProvider::class);
+
+        try {
+            EmailProvider::setProviderClassName(CommunicationEmailProvider::class);
+            EmailProvider::getProvider()->send($email);
+            $this->fail('Email should not sent due to invalid Communication Provider being set');
+        } catch (InvalidProviderException $exception) {
+        }
     }
 }

@@ -18,7 +18,7 @@ class CommunicationTest extends CommunicationTestCase
     {
         $communication = $this->createCommunicationForEmail();
 
-        $this->assertFalse($communication->Completed);
+        $this->assertTrue($communication->Completed);
 
         try {
             $communication->DateCompleted = new RhubarbDateTime("now");

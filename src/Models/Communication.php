@@ -20,6 +20,7 @@ use Rhubarb\Stem\Schema\ModelSchema;
  * @property \DateTime $DateCreated
  * @property string Title
  * @property \DateTime $DateCompleted
+ * @property \DateTime $DateToSend
  * @property bool $Completed
  *
  * @property CommunicationItem[] $Items The items connected with the communication

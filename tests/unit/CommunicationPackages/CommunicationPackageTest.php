@@ -65,6 +65,7 @@ class CommunicationPackageTest extends CommunicationTestCase
         $lastEmail = UnitTestingEmailProvider::getLastEmail();
 
         $this->assertEquals("A test email", $lastEmail->getSubject(), "The email should actually have been sent as it wasn't delayed");
+        $this->assertEquals(1, UnitTestingEmailProvider::getTotalEmailCount(), "There should have only have been a single email sent");
     }
 
     public function testPackageWithMultipleSendables()
