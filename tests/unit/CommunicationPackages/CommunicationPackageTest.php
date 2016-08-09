@@ -3,6 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications\Tests\CommunicationPackages;
 
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
+use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
@@ -61,7 +62,9 @@ class CommunicationPackageTest extends CommunicationTestCase
         $this->assertEquals($communication->UniqueIdentifier, $item->CommunicationID,
             "The item wasn't attached to the communication properly");
 
+        $lastEmail = UnitTestingEmailProvider::getLastEmail();
 
+        $this->assertEquals("A test email", $lastEmail->getSubject(), "The email should actually have been sent as it wasn't delayed");
     }
 
     public function testPackageWithMultipleSendables()

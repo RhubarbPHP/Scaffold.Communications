@@ -6,6 +6,7 @@ use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\DependencyInjection\Container;
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Logging\Log;
+use Rhubarb\Scaffolds\Communications\BackgroundTasks\CommunicationBackgroundTask;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
@@ -104,6 +105,8 @@ final class CommunicationProcessor
                 $item->save();
             }
         }
+
+        self::sendCommunication($communication);
 
         return $communication;
     }
