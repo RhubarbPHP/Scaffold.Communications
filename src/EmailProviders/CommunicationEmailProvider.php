@@ -19,6 +19,6 @@ class CommunicationEmailProvider extends EmailProvider implements CaptureToCommu
         $package->addSendable($email);
         $package->title = $email->getSubject();
 
-        return $package->send();
+        $package->send();
     }
 }
