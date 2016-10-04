@@ -14,6 +14,7 @@ use Rhubarb\Scaffolds\Communications\EmailProviders\CommunicationEmailProvider;
 use Rhubarb\Scaffolds\Communications\Exceptions\InvalidProviderException;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
+use Rhubarb\Stem\Schema\SolutionSchema;
 
 /**
  * Class CommunicationProcessor
@@ -92,7 +93,7 @@ final class CommunicationProcessor
 
     public static function sendPackage(CommunicationPackage $package)
     {
-        $communication = new Communication();
+        $communication = SolutionSchema::getModel("Communication");
         $communication->Title = $package->title;
         if ($package->dateToSend) {
             $communication->DateToSend = $package->dateToSend;

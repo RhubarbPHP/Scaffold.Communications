@@ -1,7 +1,9 @@
 # Changelog
 
-### 1.1.x
+### 1.1.1
 
+* Change:	CommunicationProcessor::sendPackage() now gets the correct Communication model if it has been
+		augmented in a project.
 
 ### 1.1.0
 
