@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.x
+
+
+
 ### 1.1.1
 
 * Change:	CommunicationEmailProvider::send() now returns the communication created.
