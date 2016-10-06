@@ -18,19 +18,19 @@ class CommunicationTest extends CommunicationTestCase
     {
         $communication = $this->createCommunicationForEmail();
 
-        $this->assertTrue($communication->Completed);
+        $this->assertTrue($communication->Status == "Sent");
 
         try {
-            $communication->DateCompleted = new RhubarbDateTime("now");
-            $this->fail("DateCompleted should not be modified");
+            $communication->DateSent = new RhubarbDateTime("now");
+            $this->fail("DateSent should not be modified");
         } catch (ModelConsistencyValidationException $ex) {
 
         }
 
-        $communication->Completed = true;
+        $communication->Status = "Sent";
         $communication->save();
 
-        $this->assertNotEmpty($communication->DateCompleted, "Expected DateSent to be set");
+        $this->assertNotEmpty($communication->DateSent, "Expected DateSent to be set");
     }
 
 //    public function testFindAllUnsentCommunications()

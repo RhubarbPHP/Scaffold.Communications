@@ -9,6 +9,7 @@ use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Models\Model;
+use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
 use Rhubarb\Stem\Schema\Columns\BooleanColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
@@ -39,6 +40,7 @@ class CommunicationItem extends Model
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationItemID"),
             new ForeignKeyColumn("CommunicationID"),
+            new MySqlEnumColumn("Status", "Not Sent", ["Not Sent","Sent","Delivered","Opened"]),
             new StringColumn("Type",50),
             new StringColumn("SendableClassName",150),
             new StringColumn("Recipient", 200),

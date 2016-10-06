@@ -29,7 +29,7 @@ class CommunicationProcessorTest extends CommunicationTestCase
 
         CommunicationProcessor::sendCommunication($communication);
 
-        $this->assertTrue($communication->Completed);
+        $this->assertTrue($communication->Status == "Sent");
     }
 
     public function testSendCommunicationWithFutureDateToSend()
@@ -40,7 +40,7 @@ class CommunicationProcessorTest extends CommunicationTestCase
 
         CommunicationProcessor::sendCommunication($communication);
 
-        $this->assertFalse($communication->Completed, "Communication sent before its Date to send date");
+        $this->assertFalse($communication->Status == "Sent", "Communication sent before its Date to send date");
     }
 
     public function testSendCommunicationWithCurrentDateToSend()
@@ -49,7 +49,8 @@ class CommunicationProcessorTest extends CommunicationTestCase
 
         CommunicationProcessor::sendCommunication($communication);
 
-        $this->assertTrue($communication->Completed);
+        $this->assertTrue($communication->Status == "Sent");
+        $this->assertEquals(date("Y-m-d"), $communication->DateSent->format("Y-m-d"));
     }
 
     public function testSendEmailCommunication()

@@ -41,12 +41,15 @@ final class CommunicationProcessor
 
         $currentDateTime = new RhubarbDateTime("now");
 
-        if ($communication->shouldSendCommunication($currentDateTime))
-        {
+        if ($communication->shouldSendCommunication($currentDateTime)) {
             self::sendItems($communication);
 
-            $communication->Completed = true;
+            $communication->markSent();
             $communication->save();
+
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -91,7 +94,25 @@ final class CommunicationProcessor
         self::getContainer()->registerClass($sendableProviderBaseClassName, $concreteProviderClassName);
     }
 
+    public static function schedulePackage(CommunicationPackage $package)
+    {
+        $communication = self::schedulePackage($package);
+        $communication->Status = "Scheduled";
+        $communication->save();
+
+        return $communication;
+    }
+
     public static function sendPackage(CommunicationPackage $package)
+    {
+        $communication = self::schedulePackage($package);
+
+        self::sendCommunication($communication);
+
+        return $communication;
+    }
+
+    public static function draftPackage(CommunicationPackage $package)
     {
         $communication = SolutionSchema::getModel("Communication");
         $communication->Title = $package->title;
@@ -117,8 +138,6 @@ final class CommunicationProcessor
                 $item->save();
             }
         }
-
-        self::sendCommunication($communication);
 
         return $communication;
     }

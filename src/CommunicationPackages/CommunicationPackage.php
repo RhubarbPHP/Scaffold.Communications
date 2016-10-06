@@ -37,4 +37,14 @@ class CommunicationPackage
     {
         return CommunicationProcessor::sendPackage($this);
     }
+
+    public function schedule()
+    {
+        return CommunicationProcessor::schedulePackage($this);
+    }
+
+    public function draft()
+    {
+        return CommunicationProcessor::draftPackage($this);
+    }
 }

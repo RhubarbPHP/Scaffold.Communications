@@ -2,6 +2,7 @@
 
 namespace Rhubarb\Scaffolds\Communications\Models;
 
+use Rhubarb\Crown\DateTime\RhubarbDate;
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\Email;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
@@ -9,6 +10,7 @@ use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Filters\Not;
 use Rhubarb\Stem\Models\Model;
+use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
 use Rhubarb\Stem\Schema\Columns\BooleanColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
@@ -19,23 +21,24 @@ use Rhubarb\Stem\Schema\ModelSchema;
  * @property int $CommunicationID
  * @property \DateTime $DateCreated
  * @property string Title
- * @property \DateTime $DateCompleted
+ * @property \DateTime $DateSent
  * @property \DateTime $DateToSend
- * @property bool $Completed
+ * @property string $Status
  *
  * @property CommunicationItem[] $Items The items connected with the communication
  */
 class Communication extends Model
 {
-    public function setCompleted($newValue)
-    {
-        $this->setModelValue("Completed", $newValue);
-        $this->setModelValue("DateCompleted", new RhubarbDateTime("now"));
-    }
-
-    public function setDateCompleted($newValue)
+    public function setDateSent($newValue)
     {
         throw new ModelConsistencyValidationException();
+    }
+
+    public function markSent()
+    {
+        $this->Status = "Sent";
+        $this->modelData["DateSent"] = new RhubarbDate("now");
+        $this->save();
     }
 
     protected function createSchema()
@@ -45,10 +48,10 @@ class Communication extends Model
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationID"),
             new StringColumn("Title", 150),
+            new MySqlEnumColumn("Status", "Draft", ["Draft","Scheduled","Sent"]),
             new DateTimeColumn("DateCreated"),
-            new DateTimeColumn("DateCompleted"),
-            new DateTimeColumn("DateToSend"),
-            new BooleanColumn("Completed", false)
+            new DateTimeColumn("DateSent"),
+            new DateTimeColumn("DateToSend")
         );
 
         return $schema;
@@ -62,7 +65,7 @@ class Communication extends Model
      */
     public function shouldSendCommunication(RhubarbDateTime $currentDateTime)
     {
-        if ($this->Completed) {
+        if ($this->Status != "Scheduled") {
             return false;
         }
 
@@ -84,10 +87,10 @@ class Communication extends Model
         parent::beforeSave();
     }
 
-    public static function FindUnsentCommunications() {
-        return self::Find( new AndGroup(
+    public static function findUnsentCommunications() {
+        return self::find( new AndGroup(
             [
-                new Equals("Completed", false)
+                new Equals("Status", "Scheduled")
             ]
         ));
     }
