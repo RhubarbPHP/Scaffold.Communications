@@ -129,7 +129,7 @@ class CommunicationItem extends Model
     {
         return self::find(new AndGroup([
             new Equals("CommunicationID", $communicationID),
-            new Equals(self::STATUS_SENT, false)
+            new Equals("Sent", false)
         ]));
     }
 }

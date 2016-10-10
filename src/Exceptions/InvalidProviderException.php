@@ -10,5 +10,4 @@ class InvalidProviderException extends RhubarbException
     {
         parent::__construct("Invalid Provider defined");
     }
-
 }

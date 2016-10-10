@@ -2,7 +2,6 @@
 
 namespace Rhubarb\Scaffolds\Communications;
 
-interface CaptureToCommunciationsProcessorInterface
+interface CaptureToCommunicationsProcessorInterface
 {
-
 }

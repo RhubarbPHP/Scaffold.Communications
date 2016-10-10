@@ -3,7 +3,6 @@
 namespace Rhubarb\Scaffolds\Communications\Custard;
 
 use Rhubarb\Custard\Command\CustardCommand;
-use Rhubarb\Scaffolds\Communications\BackgroundTasks\CommunicationBackgroundTask;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,7 +28,7 @@ class SendCommunicationsCommand extends CustardCommand
             $communication = new Communication($communicationID);
             CommunicationProcessor::sendCommunication($communication);
         } else {
-            $unsentCommunicationsArray = Communication::FindUnsentCommunications();
+            $unsentCommunicationsArray = Communication::findUnsentCommunications();
             foreach ($unsentCommunicationsArray as $communication) {
                 CommunicationProcessor::sendCommunication($communication);
             }

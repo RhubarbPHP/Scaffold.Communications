@@ -5,10 +5,10 @@ namespace Rhubarb\Scaffolds\Communications\EmailProviders;
 use Rhubarb\Crown\Sendables\Email\Email;
 use Rhubarb\Crown\Sendables\Email\EmailProvider;
 use Rhubarb\Crown\Sendables\Sendable;
-use Rhubarb\Scaffolds\Communications\CaptureToCommunciationsProcessorInterface;
+use Rhubarb\Scaffolds\Communications\CaptureToCommunicationsProcessorInterface;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 
-class CommunicationEmailProvider extends EmailProvider implements CaptureToCommunciationsProcessorInterface
+class CommunicationEmailProvider extends EmailProvider implements CaptureToCommunicationsProcessorInterface
 {
     public function send(Sendable $email)
     {
