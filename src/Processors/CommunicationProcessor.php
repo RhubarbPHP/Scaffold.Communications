@@ -96,7 +96,7 @@ final class CommunicationProcessor
 
     public static function schedulePackage(CommunicationPackage $package)
     {
-        $communication = self::schedulePackage($package);
+        $communication = self::draftPackage($package);
         $communication->Status = "Scheduled";
         $communication->save();
 
