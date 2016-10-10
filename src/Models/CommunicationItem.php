@@ -4,7 +4,6 @@ namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\Email;
-use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
@@ -22,17 +21,23 @@ use Rhubarb\Stem\Schema\ModelSchema;
 /**
  * @property int $CommunicationItemID
  * @property int $CommunicationID
+ * @property string $Status
  * @property string $Type
  * @property string $SendableClassName
  * @property string $Recipient
  * @property string $Text
- * @property mixed $Data
+ * @property \stdClass $Data
  * @property RhubarbDateTime $DateCreated
  * @property RhubarbDateTime $DateSent
  * @property bool $Sent
  */
 class CommunicationItem extends Model
 {
+    const STATUS_NOT_SENT = "Not Sent";
+    const STATUS_SENT = "Sent";
+    const STATUS_DELIVERED = "Delivered";
+    const STATUS_OPENED = "Opened";
+
     protected function createSchema()
     {
         $schema = new ModelSchema("tblCommunicationItem");
@@ -40,9 +45,9 @@ class CommunicationItem extends Model
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationItemID"),
             new ForeignKeyColumn("CommunicationID"),
-            new MySqlEnumColumn("Status", "Not Sent", ["Not Sent","Sent","Delivered","Opened"]),
-            new StringColumn("Type",50),
-            new StringColumn("SendableClassName",150),
+            new MySqlEnumColumn("Status", self::STATUS_NOT_SENT, [self::STATUS_NOT_SENT, self::STATUS_SENT, self::STATUS_DELIVERED, self::STATUS_OPENED]),
+            new StringColumn("Type", 50),
+            new StringColumn("SendableClassName", 150),
             new StringColumn("Recipient", 200),
             new LongStringColumn("Text"),
             new JsonColumn("Data", "", true),
@@ -120,13 +125,11 @@ class CommunicationItem extends Model
         $this->Attachments = $attachments;
     }
 
-    public static function FindUnsentCommunicationEmails($communicationID)
+    public static function findUnsentCommunicationEmails($communicationID)
     {
-        return self::Find(new AndGroup(
-            [
-                new Equals("CommunicationID", $communicationID),
-                new Equals("Sent", false)
-            ]
-        ));
+        return self::find(new AndGroup([
+            new Equals("CommunicationID", $communicationID),
+            new Equals(self::STATUS_SENT, false)
+        ]));
     }
 }

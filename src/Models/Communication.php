@@ -4,31 +4,33 @@ namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDate;
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
-use Rhubarb\Crown\Sendables\Email\Email;
+use Rhubarb\Stem\Collections\Collection;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
-use Rhubarb\Stem\Filters\Not;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
-use Rhubarb\Stem\Schema\Columns\BooleanColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
 use Rhubarb\Stem\Schema\Columns\StringColumn;
 use Rhubarb\Stem\Schema\ModelSchema;
 
 /**
  * @property int $CommunicationID
- * @property \DateTime $DateCreated
- * @property string Title
- * @property \DateTime $DateSent
- * @property \DateTime $DateToSend
+ * @property string $Title
  * @property string $Status
+ * @property RhubarbDateTime $DateCreated
+ * @property RhubarbDateTime $DateSent
+ * @property RhubarbDateTime $DateToSend
  *
- * @property CommunicationItem[] $Items The items connected with the communication
+ * @property CommunicationItem[]|Collection $Items The items connected with the communication
  */
 class Communication extends Model
 {
+    const STATUS_DRAFT = "Draft";
+    const STATUS_SCHEDULED = "Scheduled";
+    const STATUS_SENT = "Sent";
+
     public function setDateSent($newValue)
     {
         throw new ModelConsistencyValidationException();
@@ -36,7 +38,7 @@ class Communication extends Model
 
     public function markSent()
     {
-        $this->Status = "Sent";
+        $this->Status = self::STATUS_SENT;
         $this->modelData["DateSent"] = new RhubarbDate("now");
         $this->save();
     }
@@ -48,7 +50,7 @@ class Communication extends Model
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationID"),
             new StringColumn("Title", 150),
-            new MySqlEnumColumn("Status", "Draft", ["Draft","Scheduled","Sent"]),
+            new MySqlEnumColumn("Status", self::STATUS_DRAFT, [self::STATUS_DRAFT, self::STATUS_SCHEDULED, self::STATUS_SENT]),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new DateTimeColumn("DateToSend")
@@ -65,7 +67,7 @@ class Communication extends Model
      */
     public function shouldSendCommunication(RhubarbDateTime $currentDateTime)
     {
-        if ($this->Status != "Scheduled") {
+        if ($this->Status != self::STATUS_SCHEDULED) {
             return false;
         }
 
@@ -80,18 +82,17 @@ class Communication extends Model
 
     protected function beforeSave()
     {
-        if ($this->isNewRecord()){
+        if ($this->isNewRecord()) {
             $this->DateCreated = "now";
         }
 
         parent::beforeSave();
     }
 
-    public static function findUnsentCommunications() {
-        return self::find( new AndGroup(
-            [
-                new Equals("Status", "Scheduled")
-            ]
-        ));
+    public static function findUnsentCommunications()
+    {
+        return self::find(new AndGroup([
+            new Equals("Status", self::STATUS_SCHEDULED)
+        ]));
     }
 }
