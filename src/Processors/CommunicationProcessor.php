@@ -76,7 +76,7 @@ final class CommunicationProcessor
 
         $provider->send($sendable);
 
-        $item->Sent = true;
+        $item->Status = "Sent";
         $item->save();
 
         Log::debug("Sending communication by Email", "COMMS", [
@@ -123,7 +123,7 @@ final class CommunicationProcessor
                 $clone->clearRecipients();
                 $clone->addRecipient($recipient);
 
-                $item = new CommunicationItem();
+                $item = SolutionSchema::getModel("CommunicationItem");
                 $item->Recipient = (string)$recipient;
                 $item->Text = $clone->getText();
                 $item->Type = $clone->getSendableType();
