@@ -25,8 +25,11 @@ class CommunicationItemCollectionView extends View
         $communicationItems->intersectWith(Communication::find(), 'CommunicationID', 'CommunicationID', ['Title', 'DateToSend']);
 
         $this->registerSubLeaf(
-            $table = new Table($communicationItems->addSort('DateCreated', false))
+            $table = new Table($communicationItems->addSort('DateCreated', false)),
+            $searchPanel = new CommunicationItemSearchPanel('SearchPanel')
         );
+
+        $table->bindEventsWith($searchPanel);
 
         $table->columns = [
             '#' => 'CommunicationItemID',
@@ -60,6 +63,7 @@ class CommunicationItemCollectionView extends View
     {
         $this->printCommunicationContentDialog();
 
+        print $this->leaves['SearchPanel'];
         print $this->leaves['Table'];
     }
 
