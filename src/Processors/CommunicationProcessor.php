@@ -27,13 +27,13 @@ final class CommunicationProcessor
         return self::$container;
     }
 
-    final public static function sendCommunication(Communication $communication)
+    final public static function sendCommunication(Communication $communication, $ignoreTime = false)
     {
         Log::debug("Considering to send CommunicationItem with ID: " . $communication->CommunicationID, "COMMS");
 
         $currentDateTime = new RhubarbDateTime("now");
 
-        if ($communication->shouldSendCommunication($currentDateTime)) {
+        if ($ignoreTime || $communication->shouldSendCommunication($currentDateTime)) {
             self::sendItems($communication);
 
             $communication->markSent();
