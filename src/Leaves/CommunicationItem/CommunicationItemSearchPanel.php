@@ -2,7 +2,6 @@
 
 namespace Rhubarb\Scaffolds\Communications\Leaves\CommunicationItem;
 
-use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Leaf\Controls\Common\DateTime\Date;
 use Rhubarb\Leaf\Controls\Common\Text\TextBox;
 use Rhubarb\Leaf\SearchPanel\Leaves\SearchPanel;
@@ -15,14 +14,23 @@ class CommunicationItemSearchPanel extends SearchPanel
 {
     protected function createSearchControls()
     {
-        return [
-            new TextBox('Title'),
-            new TextBox('Recipient'),
-            new Date('CreatedAfter'),
-            new Date('CreatedBefore'),
-            new Date('SentBefore'),
-            new Date('SentAfter')
-        ];
+        /** @var Date[] $dates */
+        $dates[] = new Date('CreatedAfter');
+        $dates[] = new Date('CreatedBefore');
+        $dates[] = new Date('SentBefore');
+        $dates[] = new Date('SentAfter');
+
+        foreach ($dates as $date) {
+            $date->setOptional();
+        }
+
+        return array_merge(
+            [
+                new TextBox('Title'),
+                new TextBox('Recipient')
+            ],
+            $dates
+        );
     }
 
     public function populateFilterGroup(Group $filterGroup)
