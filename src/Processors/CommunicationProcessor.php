@@ -76,7 +76,7 @@ final class CommunicationProcessor
 
         $provider->send($sendable);
 
-        $item->Status = "Sent";
+        $item->markSent();
         $item->save();
 
         Log::debug("Sending communication by Email", "COMMS", [

@@ -59,15 +59,10 @@ class CommunicationItem extends Model
         return $schema;
     }
 
-    public function setSent($newValue)
+    public function markSent()
     {
-        $this->setModelValue("Sent", $newValue);
-        $this->setModelValue("DateSent", new RhubarbDateTime("now"));
-    }
-
-    public function setDateSent($newValue)
-    {
-        throw new ModelConsistencyValidationException();
+        $this->Status = "Sent";
+        $this->DateSent = new RhubarbDateTime("now");
     }
 
     protected function getConsistencyValidationErrors()
