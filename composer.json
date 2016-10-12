@@ -24,7 +24,8 @@
     "rhubarbphp/module-stem": "*",
     "rhubarbphp/module-leaf": "^1.0.0",
     "rhubarbphp/module-leaf-common-controls": "^1.0.8",
-    "rhubarbphp/scaffold-background-tasks": "*"
+    "rhubarbphp/scaffold-background-tasks": "*",
+    "rhubarbphp/scaffold-application-settings": "dev-develop"
   },
   "require-dev": {
     "codeception/codeception": "2.1.4",
