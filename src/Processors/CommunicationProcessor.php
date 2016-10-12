@@ -35,11 +35,12 @@ final class CommunicationProcessor
         $currentDateTime = new RhubarbDateTime("now");
 
         if (CommunicationsModule::isEmailSendingEnabled() && ($ignoreTime || $communication->shouldSendCommunication($currentDateTime))) {
-            self::sendItems($communication);
-
-            $communication->markSent();
+            if (self::sendItems($communication)) {
+                $communication->markSent();
+            } else {
+                $communication->Status = Communication::STATUS_FAILED;
+            }
             $communication->save();
-
             return true;
         } else {
             return false;
@@ -48,9 +49,13 @@ final class CommunicationProcessor
 
     final private static function sendItems(Communication $communication)
     {
+        $success = true;
         foreach ($communication->Items as $item) {
-            self::sendItem($item);
+            if (!self::sendItem($item)) {
+                $success = false;
+            }
         }
+        return $success;
     }
 
     final private static function sendItem(CommunicationItem $item)
@@ -64,7 +69,7 @@ final class CommunicationProcessor
                     "EmailProvider" => self::$emailProviderClassName
                 ]
             );
-            return;
+            return true;
         }
 
         $sendable = $item->getSendable();
@@ -75,7 +80,13 @@ final class CommunicationProcessor
             throw new InvalidProviderException();
         }
 
-        $provider->send($sendable);
+        try {
+            $provider->send($sendable);
+            $item->markSent();
+        } catch (\Exception $exception) {
+            $item->Status = CommunicationItem::STATUS_FAILED;
+        }
+
 
         $item->markSent();
         $item->save();
@@ -84,6 +95,8 @@ final class CommunicationProcessor
             "CommunicationID" => $item->CommunicationID,
             "EmailProvider" => self::$emailProviderClassName
         ]);
+
+        return $item->Status == CommunicationItem::STATUS_SENT;
     }
 
     public static function setProviderClassName($sendableProviderBaseClassName, $concreteProviderClassName)
