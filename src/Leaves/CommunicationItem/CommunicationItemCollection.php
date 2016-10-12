@@ -3,6 +3,7 @@
 namespace Rhubarb\Scaffolds\Communications\Leaves\CommunicationItem;
 
 use Rhubarb\Leaf\Crud\Leaves\ModelBoundLeaf;
+use Rhubarb\Scaffolds\Communications\CommunicationsModule;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 
 /**
@@ -33,5 +34,15 @@ class CommunicationItemCollection extends ModelBoundLeaf
 
             return $communication->Text;
         });
+
+        $this->model->setEmailSendingStatusEvent->attachHandler(function ($status) {
+            if ($status) {
+                CommunicationsModule::enableSendingEmails();
+            } else {
+                CommunicationsModule::disableSendingEmails();
+            }
+        });
+
+        $this->model->EnableSendingEmails = CommunicationsModule::isEmailSendingEnabled();
     }
 }

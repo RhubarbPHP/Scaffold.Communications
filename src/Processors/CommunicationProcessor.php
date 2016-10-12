@@ -7,6 +7,7 @@ use Rhubarb\Crown\DependencyInjection\Container;
 use Rhubarb\Crown\Logging\Log;
 use Rhubarb\Scaffolds\Communications\CaptureToCommunicationsProcessorInterface;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
+use Rhubarb\Scaffolds\Communications\CommunicationsModule;
 use Rhubarb\Scaffolds\Communications\Exceptions\InvalidProviderException;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
@@ -33,7 +34,7 @@ final class CommunicationProcessor
 
         $currentDateTime = new RhubarbDateTime("now");
 
-        if ($ignoreTime || $communication->shouldSendCommunication($currentDateTime)) {
+        if (CommunicationsModule::isEmailSendingEnabled() && ($ignoreTime || $communication->shouldSendCommunication($currentDateTime))) {
             self::sendItems($communication);
 
             $communication->markSent();

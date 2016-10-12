@@ -14,12 +14,17 @@ class CommunicationItemCollectionModel extends ModelBoundModel
 {
     public $archive = false;
 
+    /** @var Event */
     public $getContentForCommunicationItemEvent;
+
+    /** @var Event */
+    public $setEmailSendingStatusEvent;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->getContentForCommunicationItemEvent = new Event();
+        $this->setEmailSendingStatusEvent = new Event();
     }
 }

@@ -5,13 +5,13 @@ namespace Rhubarb\Scaffolds\Communications\Leaves\CommunicationItem;
 use Rhubarb\Crown\Exceptions\ForceResponseException;
 use Rhubarb\Crown\Response\RedirectResponse;
 use Rhubarb\Leaf\Controls\Common\Buttons\Button;
+use Rhubarb\Leaf\Controls\Common\Checkbox\Checkbox;
 use Rhubarb\Leaf\Leaves\LeafDeploymentPackage;
 use Rhubarb\Leaf\Table\Leaves\Columns\DateColumn;
 use Rhubarb\Leaf\Table\Leaves\Table;
 use Rhubarb\Leaf\Views\View;
 use Rhubarb\Scaffolds\Communications\Decorators\CommunicationDecorator;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
-use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 use Rhubarb\Scaffolds\Communications\Settings\CommunicationsSettings;
 use Rhubarb\Stem\Filters\Equals;
@@ -38,7 +38,8 @@ class CommunicationItemCollectionView extends View
                     CommunicationProcessor::sendCommunication($unsentCommunication, true);
                 }
                 throw new ForceResponseException(new RedirectResponse('./'));
-            })
+            }),
+            new CommunicationItemCollectionCheckbox('EnableSendingEmails')
         );
 
         $sendAllButton->setConfirmMessage('Are you sure you want to send all scheduled emails?');
@@ -78,6 +79,7 @@ class CommunicationItemCollectionView extends View
         $this->printCommunicationContentDialog();
 
         print $this->leaves['SearchPanel'];
+        print $this->leaves['EnableSendingEmails'];
         if (CommunicationsSettings::$showSendAllCommunicationsButton) {
             print $this->leaves['SendAllCommunicationsButton'];
         }

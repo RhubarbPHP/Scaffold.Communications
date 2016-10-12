@@ -40,6 +40,10 @@ communicationItemCollectionViewBridge.prototype.attachEvents = function () {
         contentDialog.style.display = 'none';
         return false;
     };
+
+    this.viewNode.querySelector('#' + this.leafPath + '_EnableSendingEmails').onchange = function() {
+        self.raiseServerEvent('setEmailSendingStatus', this.checked);
+    }
 };
 
 window.rhubarb.viewBridgeClasses.CommunicationItemCollectionViewBridge = communicationItemCollectionViewBridge;
