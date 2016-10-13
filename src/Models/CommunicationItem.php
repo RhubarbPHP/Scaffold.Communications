@@ -62,7 +62,7 @@ class CommunicationItem extends Model
 
     public function markSent()
     {
-        $this->Status = "Sent";
+        $this->Status = self::STATUS_SENT;
         $this->DateSent = new RhubarbDateTime("now");
     }
 
