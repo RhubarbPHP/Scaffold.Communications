@@ -2,14 +2,14 @@
 
 namespace Rhubarb\Scaffolds\Communications\Settings;
 
-use Rhubarb\Scaffolds\ApplicationSettings\Settings\ApplicationSettings;
+use Rhubarb\Crown\Settings;
 
 /**
  * Class CommunicationsSettings
  *
  * @property bool $communicationsEmailSending
  */
-class CommunicationsSettings extends ApplicationSettings
+class CommunicationsSettings extends Settings
 {
     /**
      * @var bool
