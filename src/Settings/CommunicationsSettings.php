@@ -14,7 +14,7 @@ class CommunicationsSettings extends ApplicationSetting
     /**
      * @var bool
      */
-    public $showSendAllCommunicationsButton = false;
+    public static $showSendAllCommunicationsButton = false;
 
     public $communicationsEmailSending = true;
 }
