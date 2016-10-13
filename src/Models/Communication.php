@@ -30,6 +30,7 @@ class Communication extends Model
     const STATUS_DRAFT = "Draft";
     const STATUS_SCHEDULED = "Scheduled";
     const STATUS_SENT = "Sent";
+    const STATUS_FAILED = 'Failed';
 
     public function setDateSent($newValue)
     {
@@ -50,7 +51,7 @@ class Communication extends Model
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationID"),
             new StringColumn("Title", 150),
-            new MySqlEnumColumn("Status", self::STATUS_DRAFT, [self::STATUS_DRAFT, self::STATUS_SCHEDULED, self::STATUS_SENT]),
+            new MySqlEnumColumn("Status", self::STATUS_DRAFT, [self::STATUS_DRAFT, self::STATUS_SCHEDULED, self::STATUS_SENT, self::STATUS_FAILED]),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new DateTimeColumn("DateToSend")
