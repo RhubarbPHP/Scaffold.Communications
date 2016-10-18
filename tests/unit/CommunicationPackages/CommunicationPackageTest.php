@@ -125,9 +125,10 @@ class CommunicationPackageTest extends CommunicationTestCase
         $package = new CommunicationPackage();
         $package->title = "Test With No Send";
         $package->addSendable($email);
-        $package->recordSent();
+        $package->draft();
 
         $communication = Communication::findLast();
+        $communication->markSent();
 
         $this->assertEquals("Sent", $communication->Status);
         $this->assertEquals($lastEmail, UnitTestingEmailProvider::getLastEmail());

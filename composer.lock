@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2c0f300a12f33fe314c2596604e56e0c",
-    "content-hash": "1bf52f31a08c25c036b4b134d1875fc2",
+    "hash": "6070eeb1e5344d3d34873183c3e86bea",
+    "content-hash": "35949d6e064efe31f49ed8008bd582d7",
     "packages": [
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -226,16 +226,16 @@
         },
         {
             "name": "rhubarbphp/module-leaf-common-controls",
-            "version": "1.0.8",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RhubarbPHP/Module.Leaf.CommonControls.git",
-                "reference": "04af54b28f1842f2d96245d223a5b1eea88c45a7"
+                "reference": "544c96d6632493ffab909855f3cab3e6954214d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RhubarbPHP/Module.Leaf.CommonControls/zipball/04af54b28f1842f2d96245d223a5b1eea88c45a7",
-                "reference": "04af54b28f1842f2d96245d223a5b1eea88c45a7",
+                "url": "https://api.github.com/repos/RhubarbPHP/Module.Leaf.CommonControls/zipball/544c96d6632493ffab909855f3cab3e6954214d5",
+                "reference": "544c96d6632493ffab909855f3cab3e6954214d5",
                 "shasum": ""
             },
             "require": {
@@ -261,20 +261,58 @@
                 "presenter",
                 "rhubarb"
             ],
-            "time": "2016-10-11 12:00:48"
+            "time": "2016-10-14 14:10:38"
         },
         {
-            "name": "rhubarbphp/module-stem",
-            "version": "1.3.7",
+            "name": "rhubarbphp/module-leaf-crud",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RhubarbPHP/Module.Stem.git",
-                "reference": "42bcdee60f9814f6c01a39f8c7b847847bc1fe0d"
+                "url": "https://github.com/RhubarbPHP/Module.Leaf.Crud.git",
+                "reference": "4e5f44feedc983c032df0e1c188ba923e4e257be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RhubarbPHP/Module.Stem/zipball/42bcdee60f9814f6c01a39f8c7b847847bc1fe0d",
-                "reference": "42bcdee60f9814f6c01a39f8c7b847847bc1fe0d",
+                "url": "https://api.github.com/repos/RhubarbPHP/Module.Leaf.Crud/zipball/4e5f44feedc983c032df0e1c188ba923e4e257be",
+                "reference": "4e5f44feedc983c032df0e1c188ba923e4e257be",
+                "shasum": ""
+            },
+            "require": {
+                "rhubarbphp/module-leaf": "^1.1.2",
+                "rhubarbphp/module-stem": "^1.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rhubarb\\Leaf\\Crud\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Provides some patterns for CRUD application development.",
+            "homepage": "http://www.rhubarbphp.com/",
+            "keywords": [
+                "framework",
+                "patterns",
+                "php",
+                "rhubarb"
+            ],
+            "time": "2016-08-08 11:59:43"
+        },
+        {
+            "name": "rhubarbphp/module-stem",
+            "version": "1.3.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RhubarbPHP/Module.Stem.git",
+                "reference": "66b0bc4541a93d95dcb88d65f103a22ddd5edf9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RhubarbPHP/Module.Stem/zipball/66b0bc4541a93d95dcb88d65f103a22ddd5edf9e",
+                "reference": "66b0bc4541a93d95dcb88d65f103a22ddd5edf9e",
                 "shasum": ""
             },
             "require": {
@@ -313,20 +351,20 @@
                 "orm",
                 "php"
             ],
-            "time": "2016-10-04 15:46:09"
+            "time": "2016-10-16 19:29:33"
         },
         {
             "name": "rhubarbphp/rhubarb",
-            "version": "1.1.6",
+            "version": "1.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RhubarbPHP/Rhubarb.git",
-                "reference": "581360a1393e54a76bde62c4ee428847364234a1"
+                "reference": "c34bd792a12d99e1d3ff658861ff6e7d3a6f574b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RhubarbPHP/Rhubarb/zipball/581360a1393e54a76bde62c4ee428847364234a1",
-                "reference": "581360a1393e54a76bde62c4ee428847364234a1",
+                "url": "https://api.github.com/repos/RhubarbPHP/Rhubarb/zipball/c34bd792a12d99e1d3ff658861ff6e7d3a6f574b",
+                "reference": "c34bd792a12d99e1d3ff658861ff6e7d3a6f574b",
                 "shasum": ""
             },
             "require": {
@@ -360,20 +398,20 @@
                 "framework",
                 "php"
             ],
-            "time": "2016-09-09 15:17:01"
+            "time": "2016-10-15 10:54:20"
         },
         {
             "name": "rhubarbphp/scaffold-application-settings",
-            "version": "dev-develop",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RhubarbPHP/Scaffold.ApplicationSettings.git",
-                "reference": "cb9f684fd1a33b131744c88056a7dcc7effa9d54"
+                "reference": "d6d805ff6cac719a713150db4f75c10ffd099abf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RhubarbPHP/Scaffold.ApplicationSettings/zipball/cb9f684fd1a33b131744c88056a7dcc7effa9d54",
-                "reference": "cb9f684fd1a33b131744c88056a7dcc7effa9d54",
+                "url": "https://api.github.com/repos/RhubarbPHP/Scaffold.ApplicationSettings/zipball/d6d805ff6cac719a713150db4f75c10ffd099abf",
+                "reference": "d6d805ff6cac719a713150db4f75c10ffd099abf",
                 "shasum": ""
             },
             "require": {
@@ -402,7 +440,7 @@
                 "php",
                 "rhubarb"
             ],
-            "time": "2016-06-30 14:48:21"
+            "time": "2016-10-16 22:31:24"
         },
         {
             "name": "rhubarbphp/scaffold-background-tasks",
@@ -763,24 +801,25 @@
         },
         {
             "name": "facebook/webdriver",
-            "version": "1.1.3",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "b7186fb1bcfda956d237f59face250d06ef47253"
+                "reference": "af21de3ae5306a8ca0bcc02a19735dadc43e83f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/b7186fb1bcfda956d237f59face250d06ef47253",
-                "reference": "b7186fb1bcfda956d237f59face250d06ef47253",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/af21de3ae5306a8ca0bcc02a19735dadc43e83f3",
+                "reference": "af21de3ae5306a8ca0bcc02a19735dadc43e83f3",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": ">=5.3.19"
+                "php": "^5.5 || ~7.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^1.11",
+                "php-mock/php-mock-phpunit": "^1.1",
                 "phpunit/phpunit": "4.6.* || ~5.0",
                 "squizlabs/php_codesniffer": "^2.6"
             },
@@ -805,7 +844,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2016-08-10 00:44:08"
+            "time": "2016-10-14 15:16:51"
         },
         {
             "name": "gentle/bitbucket-api",
@@ -2886,7 +2925,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "rhubarbphp/scaffold-application-settings": 20,
         "rhubarbphp/module-build-status-updater": 20,
         "tan-tan-kanarek/github-php-client": 20
     },
