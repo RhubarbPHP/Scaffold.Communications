@@ -1,9 +1,13 @@
 # Changelog
 
-### 1.1.2
+### 1.1.3
 
 * Added:	Added --limit= to the custard option to only send a fixed number of queued emails
 * Changed:	The custard command now uses the RequiresConnectionCommand base class
+
+### 1.1.2
+
+* Added:	Queue control leaf added
 
 ### 1.1.1
 
