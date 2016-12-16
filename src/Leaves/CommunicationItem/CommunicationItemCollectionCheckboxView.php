@@ -10,9 +10,23 @@ class CommunicationItemCollectionCheckboxView extends CheckboxView
     {
         ?>
         <label class="switch">
-            <?= parent::printViewContent();?>
+            <?php
+            $attributes = $this->getNameValueClassAndAttributeString(false);
+            $attributes .= $this->model->value ? ' checked="checked"' : '';
+
+            $presence = $this->getPresenceInputName();
+            print "<input type='hidden' name='{$presence}' value='0'><input type='checkbox' {$attributes}/>";
+            ?>
             <div class="slider"></div>
         </label>
         <?php
+    }
+
+    /**
+     * @return string
+     */
+    private function getPresenceInputName()
+    {
+        return "set_{$this->model->leafPath}_";
     }
 }
