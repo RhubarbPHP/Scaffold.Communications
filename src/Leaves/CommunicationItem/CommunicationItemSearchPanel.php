@@ -5,10 +5,12 @@ namespace Rhubarb\Scaffolds\Communications\Leaves\CommunicationItem;
 use Rhubarb\Leaf\Controls\Common\DateTime\Date;
 use Rhubarb\Leaf\Controls\Common\Text\TextBox;
 use Rhubarb\Leaf\SearchPanel\Leaves\SearchPanel;
+use Rhubarb\Stem\Filters\AnyWordsGroup;
 use Rhubarb\Stem\Filters\Contains;
 use Rhubarb\Stem\Filters\GreaterThan;
 use Rhubarb\Stem\Filters\Group;
 use Rhubarb\Stem\Filters\LessThan;
+use Rhubarb\Stem\Filters\OneOf;
 
 class CommunicationItemSearchPanel extends SearchPanel
 {
@@ -42,7 +44,7 @@ class CommunicationItemSearchPanel extends SearchPanel
         }
 
         if ($searchValues['Recipient']) {
-            $filterGroup->addFilters(new Contains('Title', $searchValues['Recipient']));
+            $filterGroup->addFilters(new Contains('Recipient', $searchValues['Recipient']));
         }
 
         if ($searchValues['CreatedAfter']) {
