@@ -14,14 +14,22 @@ class CommunicationItemSearchPanel extends SearchPanel
 {
     protected function createSearchControls()
     {
+        if (class_exists('Rhubarb\Pikaday\Pikaday')) {
+            $dateClass = 'Rhubarb\Pikaday\Pikaday';
+        } else {
+            $dateClass = Date::class;
+        }
+
         /** @var Date[] $dates */
-        $dates[] = new Date('CreatedAfter');
-        $dates[] = new Date('CreatedBefore');
-        $dates[] = new Date('SentBefore');
-        $dates[] = new Date('SentAfter');
+        $dates[] = new $dateClass('CreatedAfter');
+        $dates[] = new $dateClass('CreatedBefore');
+        $dates[] = new $dateClass('SentBefore');
+        $dates[] = new $dateClass('SentAfter');
 
         foreach ($dates as $date) {
-            $date->setOptional();
+            if ($date instanceof Date) {
+                $date->setOptional();
+            }
         }
 
         return array_merge(
