@@ -11,19 +11,28 @@ use Rhubarb\Stem\Filters\GreaterThan;
 use Rhubarb\Stem\Filters\Group;
 use Rhubarb\Stem\Filters\LessThan;
 use Rhubarb\Stem\Filters\OneOf;
+use Rhubarb\Pikaday\Pikaday;
 
 class CommunicationItemSearchPanel extends SearchPanel
 {
     protected function createSearchControls()
     {
+        if (class_exists(Pikaday::class)) {
+            $dateClass = Pikaday::class;
+        } else {
+            $dateClass = Date::class;
+        }
+
         /** @var Date[] $dates */
-        $dates[] = new Date('CreatedAfter');
-        $dates[] = new Date('CreatedBefore');
-        $dates[] = new Date('SentBefore');
-        $dates[] = new Date('SentAfter');
+        $dates[] = new $dateClass('CreatedAfter');
+        $dates[] = new $dateClass('CreatedBefore');
+        $dates[] = new $dateClass('SentBefore');
+        $dates[] = new $dateClass('SentAfter');
 
         foreach ($dates as $date) {
-            $date->setOptional();
+            if ($date instanceof Date) {
+                $date->setOptional();
+            }
         }
 
         return array_merge(
