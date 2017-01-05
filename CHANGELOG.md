@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.5
+
+* Added:        Supports Pikaday leaf in place of common controls Date input. If present in the project it will be used automatically.
+
 ### 1.1.4
 
 * Fixed:        Made main list only show unsent items
