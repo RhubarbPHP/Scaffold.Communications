@@ -9,13 +9,14 @@ use Rhubarb\Stem\Filters\Contains;
 use Rhubarb\Stem\Filters\GreaterThan;
 use Rhubarb\Stem\Filters\Group;
 use Rhubarb\Stem\Filters\LessThan;
+use Rhubarb\Pikaday\Pikaday;
 
 class CommunicationItemSearchPanel extends SearchPanel
 {
     protected function createSearchControls()
     {
-        if (class_exists('Rhubarb\Pikaday\Pikaday')) {
-            $dateClass = 'Rhubarb\Pikaday\Pikaday';
+        if (class_exists(Pikaday::class)) {
+            $dateClass = Pikaday::class;
         } else {
             $dateClass = Date::class;
         }
