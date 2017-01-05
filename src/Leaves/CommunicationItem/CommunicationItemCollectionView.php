@@ -27,6 +27,8 @@ class CommunicationItemCollectionView extends View
         $communicationItems = $this->model->restCollection;
         if ($this->model->archive) {
             $communicationItems->filter(new Not(new Equals('Status', 'Not Sent')));
+        } else {
+            $communicationItems->filter(new Equals('Status', 'Not Sent'));
         }
         $communicationItems->intersectWith(Communication::find(), 'CommunicationID', 'CommunicationID', ['Title', 'DateToSend']);
 

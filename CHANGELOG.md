@@ -1,7 +1,10 @@
 # Changelog
 
-### 1.1.x
+### 1.1.4
 
+* Fixed:        Made main list only show unsent items
+* Fixed:        Sending enabled toggle works again
+* Fixed:        Recipient text search
 
 ### 1.1.3
 
