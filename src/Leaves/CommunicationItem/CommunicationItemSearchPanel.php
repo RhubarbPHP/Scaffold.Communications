@@ -56,17 +56,17 @@ class CommunicationItemSearchPanel extends SearchPanel
             $filterGroup->addFilters(new Contains('Recipient', $searchValues['Recipient']));
         }
 
-        if ($searchValues['CreatedAfter']) {
+        if ($searchValues['CreatedAfter'] && $searchValues['CreatedAfter']->isValidDateTime()) {
             $filterGroup->addFilters(new GreaterThan('DateCreated', $searchValues['CreatedAfter']));
         }
-        if ($searchValues['CreatedBefore']) {
+        if ($searchValues['CreatedBefore'] && $searchValues['CreatedBefore']->isValidDateTime()) {
             $filterGroup->addFilters(new LessThan('DateCreated', $searchValues['CreatedBefore']));
         }
 
-        if ($searchValues['SentAfter']) {
+        if ($searchValues['SentAfter'] && $searchValues['SentAfter']->isValidDateTime()) {
             $filterGroup->addFilters(new GreaterThan('DateSent', $searchValues['SentAfter']));
         }
-        if ($searchValues['SentBefore']) {
+        if ($searchValues['SentBefore'] && $searchValues['SentBefore']->isValidDateTime()) {
             $filterGroup->addFilters(new LessThan('DateSent', $searchValues['SentBefore']));
         }
     }
