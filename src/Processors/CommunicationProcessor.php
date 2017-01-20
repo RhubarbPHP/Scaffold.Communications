@@ -73,6 +73,22 @@ final class CommunicationProcessor
         }
 
         $sendable = $item->getSendable();
+        if (!$sendable) {
+            Log::warning(
+                "Couldn't generate a sendable object",
+                "COMMS",
+                [
+                    "CommunicationItemID" => $item->CommunicationItemID,
+                    "EmailProvider" => self::$emailProviderClassName
+                ]
+            );
+
+            $item->Status = CommunicationItem::STATUS_FAILED;
+            $item->save();
+
+            return false;
+        }
+
         $providerClass = $sendable->getProviderClassName();
         $provider = self::getContainer()->getInstance($providerClass);
 
@@ -87,8 +103,6 @@ final class CommunicationProcessor
             $item->Status = CommunicationItem::STATUS_FAILED;
         }
 
-
-        $item->markSent();
         $item->save();
 
         Log::debug("Sending communication by Email", "COMMS", [
