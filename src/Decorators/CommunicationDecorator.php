@@ -8,7 +8,7 @@ use Rhubarb\Stem\Schema\Columns\DateColumn;
 
 class CommunicationDecorator extends CommonDataDecorator
 {
-    const DATE_FORMAT = "g:ia, j M Y";
+    const DATE_FORMAT = "j M Y, g:ia";
 
     protected function registerTypeDefinitions()
     {

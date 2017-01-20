@@ -41,8 +41,9 @@ class CommunicationItemCollectionView extends View
                 }
                 throw new ForceResponseException(new RedirectResponse('./'));
             }),
-            new CommunicationItemCollectionCheckbox('EnableSendingEmails')
+            $toggleSwitch = new CommunicationItemCollectionCheckbox('EnableSendingEmails')
         );
+
 
         $sendAllButton->setConfirmMessage('Are you sure you want to send all scheduled emails?');
 
@@ -81,7 +82,8 @@ class CommunicationItemCollectionView extends View
         $this->printCommunicationContentDialog();
 
         print $this->leaves['SearchPanel'];
-        print $this->leaves['EnableSendingEmails'];
+        print '<label for="' . $this->leaves['EnableSendingEmails']->getPath() . '">Emergency stop switch</label><br>';
+        print $this->leaves['EnableSendingEmails'] . '</br>';
         if (CommunicationsSettings::$showSendAllCommunicationsButton) {
             print $this->leaves['SendAllCommunicationsButton'];
         }
