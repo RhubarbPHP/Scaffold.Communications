@@ -50,7 +50,7 @@ class CommunicationItemCollectionView extends View
 
         $table->columns = [
             '#' => 'CommunicationItemID',
-            'Title' => '{Title}',
+            'Subject' => '{Title}',
             'Recipient',
             'DateCreated',
             'Date to Send' => new DateColumn('DateToSend', 'Date to Send', CommunicationDecorator::DATE_FORMAT),
