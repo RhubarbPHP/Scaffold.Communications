@@ -37,7 +37,7 @@ class CommunicationItemSearchPanel extends SearchPanel
 
         return array_merge(
             [
-                new TextBox('Title'),
+                new TextBox('Subject'),
                 new TextBox('Recipient')
             ],
             $dates
@@ -48,8 +48,8 @@ class CommunicationItemSearchPanel extends SearchPanel
     {
         $searchValues = $this->model->searchValues;
 
-        if ($searchValues['Title']) {
-            $filterGroup->addFilters(new Contains('Title', $searchValues['Title']));
+        if ($searchValues['Subject']) {
+            $filterGroup->addFilters(new Contains('Title', $searchValues['Subject']));
         }
 
         if ($searchValues['Recipient']) {
