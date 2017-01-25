@@ -41,9 +41,8 @@ class CommunicationItemCollectionView extends View
                 }
                 throw new ForceResponseException(new RedirectResponse('./'));
             }),
-            $toggleSwitch = new CommunicationItemCollectionCheckbox('EnableSendingEmails')
+            new CommunicationItemCollectionCheckbox('EnableSendingEmails')
         );
-
 
         $sendAllButton->setConfirmMessage('Are you sure you want to send all scheduled emails?');
 
@@ -54,7 +53,7 @@ class CommunicationItemCollectionView extends View
             'Subject' => '{Title}',
             'Recipient',
             'DateCreated',
-            'Date to Send' => new DateColumn('DateToSend', 'Date to Send', CommunicationDecorator::DATE_FORMAT),
+            'Date to Send' => new DateColumn('DateToSend', 'Date to Send', CommunicationsSettings::$defaultDateTimeFormat),
             'DateSent',
             'Status',
             '' => '<a class="view-content-button" data-id="{CommunicationItemID}" href="#ViewContent">View Content</a>'
