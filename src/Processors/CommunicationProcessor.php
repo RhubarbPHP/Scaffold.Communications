@@ -11,6 +11,7 @@ use Rhubarb\Scaffolds\Communications\CommunicationsModule;
 use Rhubarb\Scaffolds\Communications\Exceptions\InvalidProviderException;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
+use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Schema\SolutionSchema;
 
 final class CommunicationProcessor
@@ -38,7 +39,8 @@ final class CommunicationProcessor
             if (self::sendItems($communication)) {
                 $communication->markSent();
             } else {
-                $communication->Status = Communication::STATUS_FAILED;
+                $communication->Status =
+                    Communication::STATUS_FAILED;
             }
             $communication->save();
             return true;
@@ -156,7 +158,10 @@ final class CommunicationProcessor
                 $item->Text = $clone->getText();
                 $item->Type = $clone->getSendableType();
                 $item->SendableClassName = get_class($clone);
-                $item->Data = $clone->toArray();
+                $data = $clone->toArray();
+                $item->save();
+                $data["CommunicationItemID"] = $item->UniqueIdentifier;
+                $item->Data = $data;
                 $item->CommunicationID = $communication->CommunicationID;
                 $item->save();
             }
