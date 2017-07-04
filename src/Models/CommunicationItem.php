@@ -29,7 +29,7 @@ use Rhubarb\Stem\Schema\ModelSchema;
  * @property \stdClass $Data
  * @property RhubarbDateTime $DateCreated
  * @property RhubarbDateTime $DateSent
- * @property bool $Sent
+ * @property string $FailureReason
  */
 class CommunicationItem extends Model
 {
@@ -54,7 +54,7 @@ class CommunicationItem extends Model
             new JsonColumn("Data", "", true),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
-            new BooleanColumn("Sent", false)
+            new StringColumn("FailureReason", 500)
         );
 
         return $schema;

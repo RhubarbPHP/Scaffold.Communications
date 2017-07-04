@@ -5,6 +5,7 @@ namespace Rhubarb\Scaffolds\Communications\Processors;
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\DependencyInjection\Container;
 use Rhubarb\Crown\Logging\Log;
+use Rhubarb\Crown\String\StringTools;
 use Rhubarb\Scaffolds\Communications\CaptureToCommunicationsProcessorInterface;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 use Rhubarb\Scaffolds\Communications\CommunicationsModule;
@@ -102,6 +103,7 @@ final class CommunicationProcessor
             $provider->send($sendable);
             $item->markSent();
         } catch (\Exception $exception) {
+            $item->FailureReason = StringTools::getShortClassNameFromNamespace(get_class($exception)) . ': ' . $exception->getMessage();
             $item->Status = CommunicationItem::STATUS_FAILED;
         }
 

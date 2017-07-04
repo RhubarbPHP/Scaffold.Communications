@@ -15,7 +15,7 @@ class CommunicationsSolutionSchema extends SolutionSchema
         parent::__construct();
 
         $this->addModel("Communication", Communication::class, 1);
-        $this->addModel("CommunicationItem", CommunicationItem::class, 1);
+        $this->addModel("CommunicationItem", CommunicationItem::class, 2);
     }
 
     protected function defineRelationships()
