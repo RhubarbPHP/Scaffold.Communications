@@ -102,17 +102,30 @@ final class CommunicationProcessor
         try {
             $provider->send($sendable);
             $item->markSent();
+
+            Log::debug("Sent communication by Email", "COMMS", [
+                "CommunicationID" => $item->CommunicationID,
+                "CommunicationItemID" => $item->CommunicationItemID,
+                "EmailProvider" => self::$emailProviderClassName
+            ]);
         } catch (\Exception $exception) {
-            $item->FailureReason = StringTools::getShortClassNameFromNamespace(get_class($exception)) . ': ' . $exception->getMessage();
+            $className = get_class($exception);
+            if (strpos($className, '\\') !== false) {
+                $className = StringTools::getShortClassNameFromNamespace($className);
+            }
+            $item->FailureReason = $className . ': ' . $exception->getMessage();
             $item->Status = CommunicationItem::STATUS_FAILED;
+
+            Log::debug("Failed sending communication by Email", "COMMS", [
+                "CommunicationID" => $item->CommunicationID,
+                "CommunicationItemID" => $item->CommunicationItemID,
+                "EmailProvider" => self::$emailProviderClassName,
+                "ExceptionType" => get_class($exception),
+                "ExceptionMessage" => $exception->getMessage()
+            ]);
         }
 
         $item->save();
-
-        Log::debug("Sending communication by Email", "COMMS", [
-            "CommunicationID" => $item->CommunicationID,
-            "EmailProvider" => self::$emailProviderClassName
-        ]);
 
         return $item->Status == CommunicationItem::STATUS_SENT;
     }
