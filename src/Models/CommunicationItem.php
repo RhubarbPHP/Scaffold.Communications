@@ -4,16 +4,14 @@ namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\Email;
-use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
+use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlJsonColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
-use Rhubarb\Stem\Schema\Columns\BooleanColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
 use Rhubarb\Stem\Schema\Columns\ForeignKeyColumn;
-use Rhubarb\Stem\Schema\Columns\JsonColumn;
 use Rhubarb\Stem\Schema\Columns\LongStringColumn;
 use Rhubarb\Stem\Schema\Columns\StringColumn;
 use Rhubarb\Stem\Schema\ModelSchema;
@@ -51,7 +49,7 @@ class CommunicationItem extends Model
             new StringColumn("SendableClassName", 150),
             new StringColumn("Recipient", 200),
             new LongStringColumn("Text"),
-            new JsonColumn("Data", "", true),
+            new MySqlJsonColumn("Data", "", true),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new StringColumn("FailureReason", 500)
