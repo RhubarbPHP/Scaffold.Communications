@@ -87,8 +87,6 @@ final class CommunicationProcessor
             $item->Status = CommunicationItem::STATUS_FAILED;
         }
 
-
-        $item->markSent();
         $item->save();
 
         Log::debug("Sending communication by Email", "COMMS", [

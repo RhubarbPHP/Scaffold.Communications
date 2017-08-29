@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.6
+
+* Fixed:	Items being marked sent when delivery failed.
+
 ### 1.1.5
 
 * Added:        Supports Pikaday leaf in place of common controls Date input. If present in the project it will be used automatically.
