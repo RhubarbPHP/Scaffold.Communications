@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.1.6
+### 1.1.8
 
 * Fixed:	Items being marked sent when delivery failed.
 
