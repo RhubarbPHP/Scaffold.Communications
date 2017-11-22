@@ -55,7 +55,7 @@ class CommunicationItem extends Model
             new StringColumn("SendableClassName", 150),
             new StringColumn("Recipient", 200),
             new LongStringColumn("Text"),
-            new JsonColumn("Data", "", true),
+            new JsonColumn("Data", null, true),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new BooleanColumn("Sent", false),
