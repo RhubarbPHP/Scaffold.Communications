@@ -81,7 +81,7 @@ final class CommunicationProcessor
         }
 
         try {
-            $item->ProviderMessageID = $provider->send($sendable);
+            $item->ProviderMessageID = $provider->send($sendable) ?? "";
             $item->markSent();
         } catch (\Exception $exception) {
             $item->Status = CommunicationItem::STATUS_FAILED;
