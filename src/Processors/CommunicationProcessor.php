@@ -100,7 +100,7 @@ final class CommunicationProcessor
         }
 
         try {
-            $provider->send($sendable);
+            $item->ProviderMessageID = $provider->send($sendable) ?? "";
             $item->markSent();
 
             Log::debug("Sent communication by Email", "COMMS", [

@@ -14,6 +14,7 @@ use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
 use Rhubarb\Stem\Schema\Columns\ForeignKeyColumn;
 use Rhubarb\Stem\Schema\Columns\LongStringColumn;
 use Rhubarb\Stem\Schema\Columns\StringColumn;
+use Rhubarb\Stem\Schema\Index;
 use Rhubarb\Stem\Schema\ModelSchema;
 
 /**
@@ -28,6 +29,10 @@ use Rhubarb\Stem\Schema\ModelSchema;
  * @property RhubarbDateTime $DateCreated
  * @property RhubarbDateTime $DateSent
  * @property string $FailureReason
+ * @property bool $Sent
+ * @property string $ProviderMessageID  An ID which identifies the message on the provider's system, e.g. Postmark's MessageID
+ * @property string $ProviderStatus  The status of the message from the provider, e.g. from Postmark this might be "Opened", "Delivered", or "Bounced"
+ * @property RhubarbDateTime $ProviderStatusChangeTime  The date and time of the last change to the ProviderStatus
  */
 class CommunicationItem extends Model
 {
@@ -52,8 +57,14 @@ class CommunicationItem extends Model
             new MySqlJsonColumn("Data", "", true),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
-            new StringColumn("FailureReason", 500)
+            new StringColumn("FailureReason", 500),
+            new BooleanColumn("Sent", false),
+            new StringColumn("ProviderMessageID", 200),
+            new StringColumn("ProviderStatus", 50),
+            new DateTimeColumn("ProviderStatusChangeTime")
         );
+
+        $schema->addIndex(new Index("ProviderMessageID"));
 
         return $schema;
     }
