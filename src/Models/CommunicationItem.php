@@ -4,16 +4,14 @@ namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\Email;
-use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
+use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlJsonColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
-use Rhubarb\Stem\Schema\Columns\BooleanColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
 use Rhubarb\Stem\Schema\Columns\ForeignKeyColumn;
-use Rhubarb\Stem\Schema\Columns\JsonColumn;
 use Rhubarb\Stem\Schema\Columns\LongStringColumn;
 use Rhubarb\Stem\Schema\Columns\StringColumn;
 use Rhubarb\Stem\Schema\Index;
@@ -30,6 +28,7 @@ use Rhubarb\Stem\Schema\ModelSchema;
  * @property \stdClass $Data
  * @property RhubarbDateTime $DateCreated
  * @property RhubarbDateTime $DateSent
+ * @property string $FailureReason
  * @property bool $Sent
  * @property string $ProviderMessageID  An ID which identifies the message on the provider's system, e.g. Postmark's MessageID
  * @property string $ProviderStatus  The status of the message from the provider, e.g. from Postmark this might be "Opened", "Delivered", or "Bounced"
@@ -55,9 +54,10 @@ class CommunicationItem extends Model
             new StringColumn("SendableClassName", 150),
             new StringColumn("Recipient", 200),
             new LongStringColumn("Text"),
-            new JsonColumn("Data", "", true),
+            new MySqlJsonColumn("Data", "", true),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
+            new StringColumn("FailureReason", 500),
             new BooleanColumn("Sent", false),
             new StringColumn("ProviderMessageID", 200),
             new StringColumn("ProviderStatus", 50),
