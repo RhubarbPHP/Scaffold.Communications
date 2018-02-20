@@ -25,7 +25,7 @@ class CommunicationItemCollectionCheckboxView extends CheckboxView
     /**
      * @return string
      */
-    private function getPresenceInputName()
+    protected function getPresenceInputName()
     {
         return "set_{$this->model->leafPath}_";
     }
