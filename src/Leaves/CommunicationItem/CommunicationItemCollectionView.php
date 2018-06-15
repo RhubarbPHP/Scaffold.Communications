@@ -53,7 +53,7 @@ class CommunicationItemCollectionView extends View
             'Subject' => '{Title}',
             'Recipient',
             'DateCreated',
-            'Date to Send' => new DateColumn('DateToSend', 'Date to Send', CommunicationDecorator::DATE_FORMAT),
+            'Date to Send' => new DateColumn('DateToSend', 'Date to Send', CommunicationsSettings::$defaultDateTimeFormat),
             'DateSent',
             'Status',
             '' => '<a class="view-content-button" data-id="{CommunicationItemID}" href="#ViewContent">View Content</a>'
@@ -81,7 +81,8 @@ class CommunicationItemCollectionView extends View
         $this->printCommunicationContentDialog();
 
         print $this->leaves['SearchPanel'];
-        print $this->leaves['EnableSendingEmails'];
+        print '<label for="' . $this->leaves['EnableSendingEmails']->getPath() . '">Emergency stop switch</label><br>';
+        print $this->leaves['EnableSendingEmails'] . '</br>';
         if (CommunicationsSettings::$showSendAllCommunicationsButton) {
             print $this->leaves['SendAllCommunicationsButton'];
         }

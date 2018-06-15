@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.9
+
+* Fixed:	Fixed the issue with no message Id causing null issues
+
 ### 1.1.8
 
 * Fixed:	Items being marked sent when delivery failed.

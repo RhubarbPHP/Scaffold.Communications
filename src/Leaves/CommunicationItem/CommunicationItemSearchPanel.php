@@ -2,35 +2,37 @@
 
 namespace Rhubarb\Scaffolds\Communications\Leaves\CommunicationItem;
 
+use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Leaf\Controls\Common\DateTime\Date;
 use Rhubarb\Leaf\Controls\Common\Text\TextBox;
 use Rhubarb\Leaf\SearchPanel\Leaves\SearchPanel;
-use Rhubarb\Stem\Filters\AnyWordsGroup;
+use Rhubarb\Pikaday\Pikaday;
 use Rhubarb\Stem\Filters\Contains;
 use Rhubarb\Stem\Filters\GreaterThan;
 use Rhubarb\Stem\Filters\Group;
 use Rhubarb\Stem\Filters\LessThan;
-use Rhubarb\Stem\Filters\OneOf;
-use Rhubarb\Pikaday\Pikaday;
 
 class CommunicationItemSearchPanel extends SearchPanel
 {
     protected function createSearchControls()
     {
         if (class_exists(Pikaday::class)) {
-            $dateClass = Pikaday::class;
+            $dates = [
+                new Pikaday('CreatedAfter'),
+                new Pikaday('CreatedBefore'),
+                new Pikaday('SentBefore'),
+                new Pikaday('SentAfter')
+            ];
         } else {
-            $dateClass = Date::class;
-        }
+            /** @var Date[] $dates */
+            $dates = [
+                new Date('CreatedAfter'),
+                new Date('CreatedBefore'),
+                new Date('SentBefore'),
+                new Date('SentAfter')
+            ];
 
-        /** @var Date[] $dates */
-        $dates[] = new $dateClass('CreatedAfter');
-        $dates[] = new $dateClass('CreatedBefore');
-        $dates[] = new $dateClass('SentBefore');
-        $dates[] = new $dateClass('SentAfter');
-
-        foreach ($dates as $date) {
-            if ($date instanceof Date) {
+            foreach ($dates as $date) {
                 $date->setOptional();
             }
         }
@@ -56,17 +58,17 @@ class CommunicationItemSearchPanel extends SearchPanel
             $filterGroup->addFilters(new Contains('Recipient', $searchValues['Recipient']));
         }
 
-        if ($searchValues['CreatedAfter'] && $searchValues['CreatedAfter']->isValidDateTime()) {
+        if ($searchValues['CreatedAfter'] instanceof RhubarbDateTime && $searchValues['CreatedAfter']->isValidDateTime()) {
             $filterGroup->addFilters(new GreaterThan('DateCreated', $searchValues['CreatedAfter']));
         }
-        if ($searchValues['CreatedBefore'] && $searchValues['CreatedBefore']->isValidDateTime()) {
+        if ($searchValues['CreatedBefore'] instanceof RhubarbDateTime && $searchValues['CreatedBefore']->isValidDateTime()) {
             $filterGroup->addFilters(new LessThan('DateCreated', $searchValues['CreatedBefore']));
         }
 
-        if ($searchValues['SentAfter'] && $searchValues['SentAfter']->isValidDateTime()) {
+        if ($searchValues['SentAfter'] instanceof RhubarbDateTime && $searchValues['SentAfter']->isValidDateTime()) {
             $filterGroup->addFilters(new GreaterThan('DateSent', $searchValues['SentAfter']));
         }
-        if ($searchValues['SentBefore'] && $searchValues['SentBefore']->isValidDateTime()) {
+        if ($searchValues['SentBefore'] instanceof RhubarbDateTime && $searchValues['SentBefore']->isValidDateTime()) {
             $filterGroup->addFilters(new LessThan('DateSent', $searchValues['SentBefore']));
         }
     }
