@@ -73,7 +73,10 @@ class CommunicationItem extends Model
     public function markSent()
     {
         $this->Status = self::STATUS_SENT;
-        $this->DateSent = new RhubarbDateTime("now");
+
+        if (!$this->DateSent || !$this->DateSent->isValidDateTime()) {
+            $this->DateSent = new RhubarbDateTime("now");
+        }
     }
 
     protected function getConsistencyValidationErrors()
