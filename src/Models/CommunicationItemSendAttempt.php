@@ -2,6 +2,7 @@
 
 namespace Rhubarb\Scaffolds\Communications\Models;
 
+use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
@@ -40,6 +41,7 @@ class CommunicationItemSendAttempt extends Model
 
         if ($this->isNewRecord()){
             $this->SystemProcessID = getmypid();
+            $this->DateSent = new RhubarbDateTime("now");
         }
     }
 }

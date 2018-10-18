@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.2
+
+* Fixed:    DateSent in attempt log not being set correctly.
+
 ### 1.2.1
 
 * Fixed:    Throttle not correctly adhered to.
