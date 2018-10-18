@@ -46,8 +46,8 @@ class SendCommunicationsCommand extends RequiresRepositoryCommand
             }
 
 
-            $maxPerSecond = CommunicationProcessorSettings::singleton();
-            $timePerEmail = 1 / $maxPerSecond;
+            $maxPerSecond = CommunicationProcessorSettings::singleton()->throttle;
+            $timePerEmail = (1 / $maxPerSecond) * 1000000;
 
             if ($this->input->getOption('dry-run')) {
                 $output->writeln("Dry run: would send " . count($unsentCommunicationsArray) . " communications selected for sending.");
@@ -64,10 +64,11 @@ class SendCommunicationsCommand extends RequiresRepositoryCommand
 
                 $endTime = microtime(true) * 1000000;
                 $diff = $endTime - $startTime;
+
                 $timeToSleep = $timePerEmail - $diff;
 
                 if ($timeToSleep > 0) {
-                    usleep($timeToSleep * 1000000);
+                    usleep($timeToSleep);
                 }
             }
         }

@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.1
+
+* Fixed:    Throttle not correctly adhered to.
+
 ### 1.2.0
 
 * Added:    New throttle feature to combat SES throttling etc.
