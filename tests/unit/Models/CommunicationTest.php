@@ -2,6 +2,7 @@
 
 namespace Rhubarb\Scaffolds\Communications\Tests\Models;
 
+use Rhubarb\Crown\DateTime\RhubarbDate;
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
@@ -33,12 +34,18 @@ class CommunicationTest extends CommunicationTestCase
         $this->assertNotEmpty($communication->DateSent, "Expected DateSent to be set");
     }
 
-//    public function testFindAllUnsentCommunications()
-//    {
-//        $this->assertCount(0, Communication::FindUnsentCommunications(), "Expected 0 Communications to be sent");
-//
-//        $communication = $this->createCommunicationForEmail();
-//
-//        $this->assertCount(1, Communication::FindUnsentCommunications(), "Expected 1 Communications to be sent");
-//    }
+    public function testFindAllUnsentCommunications()
+    {
+        $this->assertCount(0, Communication::FindUnsentCommunications(), "Expected 0 Communications to be sent");
+
+        $communication = $this->createCommunicationForEmail(true);
+
+        $this->assertCount(1, Communication::FindUnsentCommunications(), "Expected 1 Communications to be sent");
+
+        $communication->DateToSend = new RhubarbDateTime("0000-00-00 00:00:00");
+        $communication->save();
+
+        $this->assertCount(0, Communication::FindUnsentCommunications(), "Scheduled comms with no date to sent aren't to be sent.");
+
+    }
 }

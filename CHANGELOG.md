@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.2.0
+
+* Added:    New throttle feature to combat SES throttling etc.
+* Added:    New attempt log table
+* Fixed:    Double send block repaired
+
 ### 1.1.9
 
 * Fixed:	Fixed the issue with no message Id causing null issues

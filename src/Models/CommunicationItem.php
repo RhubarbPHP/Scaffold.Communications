@@ -59,7 +59,6 @@ class CommunicationItem extends Model
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new StringColumn("FailureReason", 500),
-            new BooleanColumn("Sent", false),
             new StringColumn("ProviderMessageID", 200),
             new StringColumn("ProviderStatus", 50),
             new DateTimeColumn("ProviderStatusChangeTime")

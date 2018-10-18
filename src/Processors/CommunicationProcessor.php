@@ -12,6 +12,8 @@ use Rhubarb\Scaffolds\Communications\CommunicationsModule;
 use Rhubarb\Scaffolds\Communications\Exceptions\InvalidProviderException;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItemSendAttempt;
+use Rhubarb\Scaffolds\Communications\Tests\Models\CommunicationItemTest;
 use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Schema\SolutionSchema;
 
@@ -63,7 +65,8 @@ final class CommunicationProcessor
 
     final private static function sendItem(CommunicationItem $item)
     {
-        if ($item->Sent) {
+        $item->reload();
+        if ($item->Status == CommunicationItem::STATUS_SENT){
             Log::warning(
                 "Attempt blocked to send already sent email",
                 "COMMS",
@@ -99,9 +102,17 @@ final class CommunicationProcessor
             throw new InvalidProviderException();
         }
 
+        $attempt = new CommunicationItemSendAttempt();
+        $attempt->CommunicationItemID = $item->CommunicationItemID;
+        $attempt->save();
+
         try {
             $item->ProviderMessageID = $provider->send($sendable) ?? "";
             $item->markSent();
+
+            $attempt->Status = CommunicationItemSendAttempt::STATUS_SUCCESS;
+            $attempt->ProviderMessageID = $item->ProviderMessageID;
+            $attempt->save();
 
             Log::debug("Sent communication by Email", "COMMS", [
                 "CommunicationID" => $item->CommunicationID,
@@ -115,6 +126,10 @@ final class CommunicationProcessor
             }
             $item->FailureReason = $className . ': ' . $exception->getMessage();
             $item->Status = CommunicationItem::STATUS_FAILED;
+
+            $attempt->Status = CommunicationItemSendAttempt::STATUS_FAILED;
+            $attempt->FailureReason = $item->FailureReason;
+            $attempt->save();
 
             Log::debug("Failed sending communication by Email", "COMMS", [
                 "CommunicationID" => $item->CommunicationID,
@@ -135,10 +150,15 @@ final class CommunicationProcessor
         self::getContainer()->registerClass($sendableProviderBaseClassName, $concreteProviderClassName);
     }
 
-    public static function schedulePackage(CommunicationPackage $package)
+    public static function schedulePackage(CommunicationPackage $package, $date = null)
     {
         $communication = self::draftPackage($package);
         $communication->Status = "Scheduled";
+
+        if ($date){
+            $communication->DateToSend = $date;
+        }
+
         $communication->save();
 
         return $communication;

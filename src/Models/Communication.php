@@ -8,6 +8,8 @@ use Rhubarb\Stem\Collections\Collection;
 use Rhubarb\Stem\Exceptions\ModelConsistencyValidationException;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
+use Rhubarb\Stem\Filters\GreaterThan;
+use Rhubarb\Stem\Filters\Not;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
@@ -93,7 +95,8 @@ class Communication extends Model
     public static function findUnsentCommunications()
     {
         return self::find(new AndGroup([
-            new Equals("Status", self::STATUS_SCHEDULED)
+            new Equals("Status", self::STATUS_SCHEDULED),
+            new Not(new Equals("DateToSend", new RhubarbDateTime("0000-00-00 00:00:00")))
         ]));
     }
 }

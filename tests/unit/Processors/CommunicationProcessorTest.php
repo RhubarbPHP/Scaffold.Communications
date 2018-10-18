@@ -9,6 +9,7 @@ use Rhubarb\Crown\Tests\Fixtures\UnitTestingEmailProvider;
 use Rhubarb\Scaffolds\Communications\CommunicationPackages\CommunicationPackage;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
+use Rhubarb\Scaffolds\Communications\Models\CommunicationItemSendAttempt;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
 
@@ -30,6 +31,21 @@ class CommunicationProcessorTest extends CommunicationTestCase
         CommunicationProcessor::sendCommunication($communication);
 
         $this->assertTrue($communication->Status == "Sent");
+    }
+
+    public function testSendRecordsAttempt()
+    {
+        $communication = $this->createCommunication(null);
+        $communication->save();
+
+        CommunicationProcessor::sendCommunication($communication);
+
+        $this->assertCount(1, CommunicationItemSendAttempt::all());
+
+        $attempt = CommunicationItemSendAttempt::findLast();
+
+        $this->assertEquals($communication->Items[0]->CommunicationItemID, $attempt->CommunicationItemID);
+        $this->assertNotEmpty($attempt->SystemProcessID);
     }
 
     public function testSendCommunicationWithFutureDateToSend()
@@ -73,6 +89,12 @@ class CommunicationProcessorTest extends CommunicationTestCase
         CommunicationProcessor::sendCommunication($communication);
 
         $this->assertSame($lastEmail, UnitTestingEmailProvider::GetLastEmail(), "Email should not have been sent again");
+
+        $communication->reload();
+        CommunicationProcessor::sendCommunication($communication);
+
+        $this->assertSame($lastEmail, UnitTestingEmailProvider::GetLastEmail(), "Email should not have been sent again");
+
     }
 
     public function testSendEmailWithFailedAttempts()

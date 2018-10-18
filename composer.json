@@ -29,7 +29,7 @@
     "rhubarbphp/module-leaf-crud": "^1.0"
   },
   "require-dev": {
-    "codeception/codeception": "2.1.4",
+    "codeception/codeception": "^2.0.0",
     "rhubarbphp/custard": ">1.0",
     "phpmd/phpmd": "*",
     "squizlabs/php_codesniffer": "*",
