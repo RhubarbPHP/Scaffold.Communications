@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.3
+
+* Fixed: Mysql 5.6 support by optionally not using native json columns
+
 ### 1.2.2
 
 * Fixed:    DateSent in attempt log not being set correctly.

@@ -4,6 +4,7 @@ namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\Email;
+use Rhubarb\Scaffolds\Communications\Settings\CommunicationsSettings;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Models\Model;
@@ -55,7 +56,7 @@ class CommunicationItem extends Model
             new StringColumn("SendableClassName", 150),
             new StringColumn("Recipient", 200),
             new LongStringColumn("Text"),
-            new MySqlJsonColumn("Data", "", true),
+            new MySqlJsonColumn("Data", "", true, CommunicationsSettings::singleton()->nativeJSONColumns),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new StringColumn("FailureReason", 500),
