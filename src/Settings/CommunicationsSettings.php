@@ -17,4 +17,6 @@ class CommunicationsSettings extends ApplicationSettings
     public static $showSendAllCommunicationsButton = false;
 
     public static $defaultDateTimeFormat = CommunicationDecorator::DATE_FORMAT;
+
+    public $nativeJSONColumns = true;
 }
