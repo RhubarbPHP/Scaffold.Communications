@@ -59,7 +59,7 @@ class CommunicationItem extends Model
             new StringColumn("SendableClassName", 150),
             new StringColumn("Recipient", 200),
             new LongStringColumn("Text"),
-            new MySqlJsonColumn("Data", "", true, CommunicationsSettings::singleton()->nativeJSONColumns),
+            new MySqlJsonColumn("Data", null, true, CommunicationsSettings::singleton()->nativeJSONColumns),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new StringColumn("FailureReason", 500),
