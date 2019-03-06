@@ -75,7 +75,9 @@ class CommunicationPackageTest extends CommunicationTestCase
         $this->assertEquals("Email", $item->Type, "The type should have been email");
         $this->assertEquals($email->getText(), $item->Text, "The text value wasn't set correctly");
         $this->assertEquals(get_class($email), $item->SendableClassName, "The class name wasn't set correctly");
-        $this->assertEquals($email->toArray(), $item->Data, "The sendable wasn't encoded into data correctly");
+        $data = $item->Data;
+        unset($data["CommunicationItemID"]);
+        $this->assertEquals($email->toArray(), $data, "The sendable wasn't encoded into data correctly");
         $this->assertEquals($communication->UniqueIdentifier, $item->CommunicationID,
             "The item wasn't attached to the communication properly");
 

@@ -4,10 +4,12 @@ namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\Email;
+use Rhubarb\Scaffolds\Communications\Settings\CommunicationsSettings;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
 use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
+use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlJsonColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
 use Rhubarb\Stem\Schema\Columns\BooleanColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
@@ -44,6 +46,7 @@ class CommunicationItem extends Model
     const STATUS_FAILED = 'Failed';
     const STATUS_HARD_BOUNCE = "Hard bounce";
     const STATUS_SOFT_BOUNCE = "Soft bounce";
+    const STATUS_REJECTED = "Rejected by provider";
 
     protected function createSchema()
     {
@@ -52,16 +55,15 @@ class CommunicationItem extends Model
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationItemID"),
             new ForeignKeyColumn("CommunicationID"),
-            new MySqlEnumColumn("Status", self::STATUS_NOT_SENT, [self::STATUS_NOT_SENT, self::STATUS_SENT, self::STATUS_DELIVERED, self::STATUS_OPENED, self::STATUS_FAILED, self::STATUS_HARD_BOUNCE, self::STATUS_SOFT_BOUNCE]),
+            new MySqlEnumColumn("Status", self::STATUS_NOT_SENT, [self::STATUS_NOT_SENT, self::STATUS_SENT, self::STATUS_DELIVERED, self::STATUS_OPENED, self::STATUS_FAILED, self::STATUS_HARD_BOUNCE, self::STATUS_SOFT_BOUNCE, self::STATUS_REJECTED]),
             new StringColumn("Type", 50),
             new StringColumn("SendableClassName", 150),
             new StringColumn("Recipient", 200),
             new LongStringColumn("Text"),
-            new JsonColumn("Data", "", true),
+            new MySqlJsonColumn("Data", "", true, CommunicationsSettings::singleton()->nativeJSONColumns),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new StringColumn("FailureReason", 500),
-            new BooleanColumn("Sent", false),
             new StringColumn("ProviderMessageID", 200),
             new StringColumn("ProviderStatus", 50),
             new DateTimeColumn("ProviderStatusChangeTime")
@@ -75,7 +77,10 @@ class CommunicationItem extends Model
     public function markSent()
     {
         $this->Status = self::STATUS_SENT;
-        $this->DateSent = new RhubarbDateTime("now");
+
+        if (!$this->DateSent || !$this->DateSent->isValidDateTime()) {
+            $this->DateSent = new RhubarbDateTime("now");
+        }
     }
 
     protected function getConsistencyValidationErrors()

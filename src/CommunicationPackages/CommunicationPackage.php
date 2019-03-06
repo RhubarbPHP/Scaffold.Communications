@@ -38,9 +38,9 @@ class CommunicationPackage
         return CommunicationProcessor::sendPackage($this);
     }
 
-    public function schedule()
+    public function schedule($date = null)
     {
-        return CommunicationProcessor::schedulePackage($this);
+        return CommunicationProcessor::schedulePackage($this, $date);
     }
 
     public function draft()

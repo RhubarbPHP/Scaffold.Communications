@@ -1,5 +1,23 @@
 # Changelog
 
+### 1.2.3
+
+* Fixed: Mysql 5.6 support by optionally not using native json columns
+
+### 1.2.2
+
+* Fixed:    DateSent in attempt log not being set correctly.
+
+### 1.2.1
+
+* Fixed:    Throttle not correctly adhered to.
+
+### 1.2.0
+
+* Added:    New throttle feature to combat SES throttling etc.
+* Added:    New attempt log table
+* Fixed:    Double send block repaired
+
 ### 1.1.9
 
 * Fixed:	Fixed the issue with no message Id causing null issues

@@ -4,6 +4,7 @@ namespace Rhubarb\Scaffolds\Communications\Tests\Fixtures;
 
 use Codeception\TestCase\Test;
 use Rhubarb\Crown\Application;
+use Rhubarb\Crown\DateTime\RhubarbDateTime;
 use Rhubarb\Crown\Sendables\Email\EmailProvider;
 use Rhubarb\Crown\Sendables\Email\SimpleEmail;
 use Rhubarb\Crown\Tests\Fixtures\TestCases\RhubarbTestCase;
@@ -40,7 +41,7 @@ abstract class CommunicationTestCase extends RhubarbTestCase
      * @return Communication
      * @throws \Rhubarb\Stem\Exceptions\RecordNotFoundException
      */
-    public function createCommunicationForEmail()
+    public function createCommunicationForEmail($schedule = false)
     {
         $email = new SimpleEmail();
         $email->setSubject("The three billy goats");
@@ -52,7 +53,12 @@ abstract class CommunicationTestCase extends RhubarbTestCase
         $package = new CommunicationPackage();
         $package->addSendable($email);
         $package->title = $email->getSubject();
-        $package->send();
+
+        if ($schedule){
+            $package->schedule(new RhubarbDateTime("now"));
+        } else {
+            $package->send();
+        }
 
         return Communication::findLast();
     }

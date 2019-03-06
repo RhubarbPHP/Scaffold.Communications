@@ -5,6 +5,7 @@ namespace Rhubarb\Scaffolds\Communications\Custard;
 use Rhubarb\Custard\Command\CustardCommand;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
+use Rhubarb\Scaffolds\Communications\Settings\CommunicationProcessorSettings;
 use Rhubarb\Stem\Custard\RequiresRepositoryCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +21,7 @@ class SendCommunicationsCommand extends RequiresRepositoryCommand
         $this->setName('communication:send-unsent')
             ->setDescription('Sends unsent Communications to the their relevant recipients')
             ->addOption("limit", "l", InputOption::VALUE_OPTIONAL, "Limits sending to n number of entries", 0)
+            ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'If specified, no emails will be sent, but the numbers of emails that would be sent will be listed')
             ->addArgument('communicationID', InputArgument::OPTIONAL, 'The id of the communication you wish to send');
     }
 
@@ -32,7 +34,10 @@ class SendCommunicationsCommand extends RequiresRepositoryCommand
 
         if (isset($communicationID)) {
             $communication = new Communication($communicationID);
-            CommunicationProcessor::sendCommunication($communication);
+
+            if (!$this->input->getOption('dry-run')) {
+                CommunicationProcessor::sendCommunication($communication);
+            }
         } else {
             $unsentCommunicationsArray = Communication::findUnsentCommunications();
 
@@ -40,8 +45,31 @@ class SendCommunicationsCommand extends RequiresRepositoryCommand
                 $unsentCommunicationsArray->setRange(0, $limit);
             }
 
+
+            $maxPerSecond = CommunicationProcessorSettings::singleton()->throttle;
+            $timePerEmail = (1 / $maxPerSecond) * 1000000;
+
+            if ($this->input->getOption('dry-run')) {
+                $output->writeln("Dry run: would send " . count($unsentCommunicationsArray) . " communications selected for sending.");
+            }
+
             foreach ($unsentCommunicationsArray as $communication) {
-                CommunicationProcessor::sendCommunication($communication);
+                $startTime = microtime(true) * 1000000;
+
+                if (!$this->input->getOption('dry-run')) {
+                    CommunicationProcessor::sendCommunication($communication);
+                } else {
+                    $output->writeln("Dry run: sending ".$communication->CommunicationID);
+                }
+
+                $endTime = microtime(true) * 1000000;
+                $diff = $endTime - $startTime;
+
+                $timeToSleep = $timePerEmail - $diff;
+
+                if ($timeToSleep > 0) {
+                    usleep($timeToSleep);
+                }
             }
         }
     }
