@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.2.4
+
+* Fixed CommunicationItem `getSendable()` to include the recipient on the `Sendable`.
+* Removed duplicate `FailureReason` field from CommunicationItem
+* Changed `FailureReason` to LongStringColumn in CommunicationItemSendAttempt to ensure full message logged.
+
 ### 1.2.3
 
 * Fixed: Mysql 5.6 support by optionally not using native json columns
