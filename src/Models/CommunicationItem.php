@@ -3,7 +3,8 @@
 namespace Rhubarb\Scaffolds\Communications\Models;
 
 use Rhubarb\Crown\DateTime\RhubarbDateTime;
-use Rhubarb\Crown\Sendables\Email\Email;
+use Rhubarb\Crown\Sendables\Email\EmailRecipient;
+use Rhubarb\Crown\Sendables\Sendable;
 use Rhubarb\Scaffolds\Communications\Settings\CommunicationsSettings;
 use Rhubarb\Stem\Filters\AndGroup;
 use Rhubarb\Stem\Filters\Equals;
@@ -11,7 +12,6 @@ use Rhubarb\Stem\Models\Model;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlEnumColumn;
 use Rhubarb\Stem\Repositories\MySql\Schema\Columns\MySqlJsonColumn;
 use Rhubarb\Stem\Schema\Columns\AutoIncrementColumn;
-use Rhubarb\Stem\Schema\Columns\BooleanColumn;
 use Rhubarb\Stem\Schema\Columns\DateTimeColumn;
 use Rhubarb\Stem\Schema\Columns\ForeignKeyColumn;
 use Rhubarb\Stem\Schema\Columns\LongStringColumn;
@@ -59,7 +59,6 @@ class CommunicationItem extends Model
             new MySqlJsonColumn("Data", "", true, CommunicationsSettings::singleton()->nativeJSONColumns),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
-            new StringColumn("FailureReason", 500),
             new StringColumn("ProviderMessageID", 200),
             new StringColumn("ProviderStatus", 50),
             new DateTimeColumn("ProviderStatusChangeTime")
@@ -108,13 +107,17 @@ class CommunicationItem extends Model
     }
 
     /**
-     * @return Email
+     * @return Sendable
+     * @throws \Rhubarb\Crown\Exceptions\EmailException
      */
     public function getSendable()
     {
         $className = $this->SendableClassName;
 
-        return $className::fromArray($this->Data);
+        /** @var Sendable $sendable */
+        $sendable = $className::fromArray($this->Data);
+        $sendable->addRecipient(new EmailRecipient($this->Recipient));
+        return $sendable;
     }
 
     public function addAttachment($path, $newName = "")
