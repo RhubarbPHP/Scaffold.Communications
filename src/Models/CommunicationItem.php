@@ -43,6 +43,9 @@ class CommunicationItem extends Model
     const STATUS_DELIVERED = "Delivered";
     const STATUS_OPENED = "Opened";
     const STATUS_FAILED = 'Failed';
+    const STATUS_HARD_BOUNCE = "Hard bounce";
+    const STATUS_SOFT_BOUNCE = "Soft bounce";
+    const STATUS_REJECTED = "Rejected by provider";
 
     protected function createSchema()
     {
@@ -51,12 +54,12 @@ class CommunicationItem extends Model
         $schema->addColumn(
             new AutoIncrementColumn("CommunicationItemID"),
             new ForeignKeyColumn("CommunicationID"),
-            new MySqlEnumColumn("Status", self::STATUS_NOT_SENT, [self::STATUS_NOT_SENT, self::STATUS_SENT, self::STATUS_DELIVERED, self::STATUS_OPENED, self::STATUS_FAILED]),
+            new MySqlEnumColumn("Status", self::STATUS_NOT_SENT, [self::STATUS_NOT_SENT, self::STATUS_SENT, self::STATUS_DELIVERED, self::STATUS_OPENED, self::STATUS_FAILED, self::STATUS_HARD_BOUNCE, self::STATUS_SOFT_BOUNCE, self::STATUS_REJECTED]),
             new StringColumn("Type", 50),
             new StringColumn("SendableClassName", 150),
             new StringColumn("Recipient", 200),
             new LongStringColumn("Text"),
-            new MySqlJsonColumn("Data", "", true, CommunicationsSettings::singleton()->nativeJSONColumns),
+            new MySqlJsonColumn("Data", null, true, CommunicationsSettings::singleton()->nativeJSONColumns),
             new DateTimeColumn("DateCreated"),
             new DateTimeColumn("DateSent"),
             new StringColumn("ProviderMessageID", 200),
