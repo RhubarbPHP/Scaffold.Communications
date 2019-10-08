@@ -46,6 +46,7 @@ class CommunicationItemCollectionView extends View
 
         $sendAllButton->setConfirmMessage('Are you sure you want to send all scheduled emails?');
 
+        $table->setUnsearchedHtml("<p></p>");
         $table->bindEventsWith($searchPanel);
 
         $table->columns = [

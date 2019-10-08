@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.5
+
+* Fixed: Added no search HTML for performance reasons.
+
 ### 1.2.4
 
 * Fixed CommunicationItem `getSendable()` to include the recipient on the `Sendable`.
