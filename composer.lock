@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "0d9ace2d7730dc03253252353daaf91e",
@@ -3431,16 +3431,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v4.1.6",
+            "version": "v4.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "f6b9d893ad28aefd8942dc0469c8397e2216fe30"
+                "reference": "919a245e0642afa353a333d8bf3352320af85969"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/f6b9d893ad28aefd8942dc0469c8397e2216fe30",
-                "reference": "f6b9d893ad28aefd8942dc0469c8397e2216fe30",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/919a245e0642afa353a333d8bf3352320af85969",
+                "reference": "919a245e0642afa353a333d8bf3352320af85969",
                 "shasum": ""
             },
             "require": {
@@ -3498,7 +3498,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2018-10-02T12:40:59+00:00"
+            "time": "2019-04-16T11:21:55+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -3945,12 +3945,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tan-tan-kanarek/github-php-client.git",
-                "reference": "65e1068dc27588229ecfd1b4cc5eb492df2fa6cd"
+                "reference": "5210937a242b58018ac1c4743d5f6eb6a982d2ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tan-tan-kanarek/github-php-client/zipball/65e1068dc27588229ecfd1b4cc5eb492df2fa6cd",
-                "reference": "65e1068dc27588229ecfd1b4cc5eb492df2fa6cd",
+                "url": "https://api.github.com/repos/tan-tan-kanarek/github-php-client/zipball/5210937a242b58018ac1c4743d5f6eb6a982d2ae",
+                "reference": "5210937a242b58018ac1c4743d5f6eb6a982d2ae",
                 "shasum": ""
             },
             "type": "library",
@@ -3964,7 +3964,7 @@
                 "proprietary"
             ],
             "description": "PHP client for the Github API",
-            "time": "2018-08-19T08:43:48+00:00"
+            "time": "2019-10-06T12:01:33+00:00"
         },
         {
             "name": "theseer/fdomdocument",
