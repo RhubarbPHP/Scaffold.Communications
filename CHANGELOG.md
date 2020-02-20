@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.6
+
+* Added: Setting to enable storage of HTML instead of Text
+
 ### 1.2.5
 
 * Fixed: Added no search HTML for performance reasons.

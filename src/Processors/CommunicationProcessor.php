@@ -13,8 +13,7 @@ use Rhubarb\Scaffolds\Communications\Exceptions\InvalidProviderException;
 use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItemSendAttempt;
-use Rhubarb\Scaffolds\Communications\Tests\Models\CommunicationItemTest;
-use Rhubarb\Stem\Filters\Equals;
+use Rhubarb\Scaffolds\Communications\Settings\CommunicationProcessorSettings;
 use Rhubarb\Stem\Schema\SolutionSchema;
 
 final class CommunicationProcessor
@@ -182,6 +181,8 @@ final class CommunicationProcessor
         }
         $communication->save();
 
+        $storeHtml = CommunicationProcessorSettings::singleton()->storeHtml;
+
         foreach ($package->getSendables() as $sendable) {
             foreach ($sendable->getRecipients() as $recipient) {
                 $clone = clone $sendable;
@@ -190,7 +191,7 @@ final class CommunicationProcessor
 
                 $item = SolutionSchema::getModel("CommunicationItem");
                 $item->Recipient = (string)$recipient;
-                $item->Text = $clone->getText();
+                $item->Text = $storeHtml ? $clone->getHtml() : $clone->getText();
                 $item->Type = $clone->getSendableType();
                 $item->SendableClassName = get_class($clone);
                 $data = $clone->toArray();

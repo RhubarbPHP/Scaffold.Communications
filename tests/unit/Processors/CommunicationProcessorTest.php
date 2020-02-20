@@ -11,6 +11,7 @@ use Rhubarb\Scaffolds\Communications\Models\Communication;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItem;
 use Rhubarb\Scaffolds\Communications\Models\CommunicationItemSendAttempt;
 use Rhubarb\Scaffolds\Communications\Processors\CommunicationProcessor;
+use Rhubarb\Scaffolds\Communications\Settings\CommunicationProcessorSettings;
 use Rhubarb\Scaffolds\Communications\Tests\Fixtures\CommunicationTestCase;
 
 class CommunicationProcessorTest extends CommunicationTestCase
@@ -122,6 +123,7 @@ class CommunicationProcessorTest extends CommunicationTestCase
     {
         $email = new SimpleEmail();
         $email->setText("Test Message Body");
+        $email->setHtml('<p>Test Message Body</p>');
         $email->setSender("sender@gcdtech.com");
         $email->addRecipientByEmail("test@test.com");
 
@@ -156,5 +158,16 @@ class CommunicationProcessorTest extends CommunicationTestCase
         $communication = Communication::findLast();
 
         return $communication;
+    }
+
+    public function testStoreHtmlUponRequest()
+    {
+        $this->createCommunication(null);
+        self::assertNotContains('<p>', CommunicationItem::findLast()->Text);
+
+        CommunicationProcessorSettings::singleton()->storeHtml = true;
+
+        $this->createCommunication(null);
+        self::assertContains('<p>', CommunicationItem::findLast()->Text);
     }
 }
