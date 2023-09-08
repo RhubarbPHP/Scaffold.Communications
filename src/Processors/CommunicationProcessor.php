@@ -51,7 +51,7 @@ final class CommunicationProcessor
         }
     }
 
-    final private static function sendItems(Communication $communication)
+    private static function sendItems(Communication $communication)
     {
         $success = true;
         foreach ($communication->Items as $item) {
@@ -62,10 +62,10 @@ final class CommunicationProcessor
         return $success;
     }
 
-    final private static function sendItem(CommunicationItem $item)
+    private static function sendItem(CommunicationItem $item)
     {
         $item->reload();
-        if ($item->Status == CommunicationItem::STATUS_SENT){
+        if ($item->Status == CommunicationItem::STATUS_SENT) {
             Log::warning(
                 "Attempt blocked to send already sent email",
                 "COMMS",
@@ -154,7 +154,7 @@ final class CommunicationProcessor
         $communication = self::draftPackage($package);
         $communication->Status = "Scheduled";
 
-        if ($date){
+        if ($date) {
             $communication->DateToSend = $date;
         }
 
@@ -190,7 +190,7 @@ final class CommunicationProcessor
                 $clone->addRecipient($recipient);
 
                 $item = SolutionSchema::getModel("CommunicationItem");
-                $item->Recipient = (string)$recipient;
+                $item->Recipient = (string) $recipient;
                 $item->Text = $storeHtml ? $clone->getHtml() : $clone->getText();
                 $item->Type = $clone->getSendableType();
                 $item->SendableClassName = get_class($clone);
