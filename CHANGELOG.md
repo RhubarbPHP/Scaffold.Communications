@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.2.7
+
+* Added: PHP 8 support
 ### 1.2.6
 
 * Added: Setting to enable storage of HTML instead of Text
